@@ -1,5 +1,6 @@
 // src/Projects.tsx
 import React, { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom';
 
 interface Project {
   id: number;
@@ -28,6 +29,7 @@ const Projects: React.FC = () => {
             <h3>{project.name}</h3>
             <p>{project.description}</p>
             <small>Created at: {new Date(project.created_at).toLocaleDateString()}</small>
+            <Link to={`/projects/${project.id}`}>View Project</Link>
           </li>
         ))}
       </ul>

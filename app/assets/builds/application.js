@@ -1085,7 +1085,7 @@
             }
             return dispatcher.useContext(Context);
           }
-          function useState4(initialState) {
+          function useState5(initialState) {
             var dispatcher = resolveDispatcher();
             return dispatcher.useState(initialState);
           }
@@ -1097,7 +1097,7 @@
             var dispatcher = resolveDispatcher();
             return dispatcher.useRef(initialValue);
           }
-          function useEffect4(create, deps) {
+          function useEffect5(create, deps) {
             var dispatcher = resolveDispatcher();
             return dispatcher.useEffect(create, deps);
           }
@@ -1880,7 +1880,7 @@
           exports.useContext = useContext3;
           exports.useDebugValue = useDebugValue;
           exports.useDeferredValue = useDeferredValue;
-          exports.useEffect = useEffect4;
+          exports.useEffect = useEffect5;
           exports.useId = useId;
           exports.useImperativeHandle = useImperativeHandle;
           exports.useInsertionEffect = useInsertionEffect;
@@ -1888,7 +1888,7 @@
           exports.useMemo = useMemo3;
           exports.useReducer = useReducer;
           exports.useRef = useRef3;
-          exports.useState = useState4;
+          exports.useState = useState5;
           exports.useSyncExternalStore = useSyncExternalStore;
           exports.useTransition = useTransition;
           exports.version = ReactVersion;
@@ -2384,9 +2384,9 @@
           if (typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ !== "undefined" && typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart === "function") {
             __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart(new Error());
           }
-          var React5 = require_react();
+          var React6 = require_react();
           var Scheduler = require_scheduler();
-          var ReactSharedInternals = React5.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED;
+          var ReactSharedInternals = React6.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED;
           var suppressWarning = false;
           function setSuppressWarning(newSuppressWarning) {
             {
@@ -2435,7 +2435,7 @@
           var HostPortal = 4;
           var HostComponent = 5;
           var HostText = 6;
-          var Fragment4 = 7;
+          var Fragment3 = 7;
           var Mode = 8;
           var ContextConsumer = 9;
           var ContextProvider = 10;
@@ -3592,7 +3592,7 @@
                 return "DehydratedFragment";
               case ForwardRef:
                 return getWrappedName$1(type, type.render, "ForwardRef");
-              case Fragment4:
+              case Fragment3:
                 return "Fragment";
               case HostComponent:
                 return type;
@@ -3993,7 +3993,7 @@
             {
               if (props.value == null) {
                 if (typeof props.children === "object" && props.children !== null) {
-                  React5.Children.forEach(props.children, function(child) {
+                  React6.Children.forEach(props.children, function(child) {
                     if (child == null) {
                       return;
                     }
@@ -12021,7 +12021,7 @@
               }
             }
             function updateFragment2(returnFiber, current2, fragment, lanes, key) {
-              if (current2 === null || current2.tag !== Fragment4) {
+              if (current2 === null || current2.tag !== Fragment3) {
                 var created = createFiberFromFragment(fragment, returnFiber.mode, lanes, key);
                 created.return = returnFiber;
                 return created;
@@ -12424,7 +12424,7 @@
                 if (child.key === key) {
                   var elementType = element.type;
                   if (elementType === REACT_FRAGMENT_TYPE) {
-                    if (child.tag === Fragment4) {
+                    if (child.tag === Fragment3) {
                       deleteRemainingChildren(returnFiber, child.sibling);
                       var existing = useFiber(child, element.props.children);
                       existing.return = returnFiber;
@@ -17900,7 +17900,7 @@
                 var _resolvedProps2 = workInProgress2.elementType === type ? _unresolvedProps2 : resolveDefaultProps(type, _unresolvedProps2);
                 return updateForwardRef(current2, workInProgress2, type, _resolvedProps2, renderLanes2);
               }
-              case Fragment4:
+              case Fragment3:
                 return updateFragment(current2, workInProgress2, renderLanes2);
               case Mode:
                 return updateMode(current2, workInProgress2, renderLanes2);
@@ -18172,7 +18172,7 @@
               case SimpleMemoComponent:
               case FunctionComponent:
               case ForwardRef:
-              case Fragment4:
+              case Fragment3:
               case Mode:
               case Profiler:
               case ContextConsumer:
@@ -22433,7 +22433,7 @@
             return fiber;
           }
           function createFiberFromFragment(elements, mode, lanes, key) {
-            var fiber = createFiber(Fragment4, elements, key, mode);
+            var fiber = createFiber(Fragment3, elements, key, mode);
             fiber.lanes = lanes;
             return fiber;
           }
@@ -23589,7 +23589,7 @@
       if (true) {
         (function() {
           "use strict";
-          var React5 = require_react();
+          var React6 = require_react();
           var REACT_ELEMENT_TYPE = Symbol.for("react.element");
           var REACT_PORTAL_TYPE = Symbol.for("react.portal");
           var REACT_FRAGMENT_TYPE = Symbol.for("react.fragment");
@@ -23615,7 +23615,7 @@
             }
             return null;
           }
-          var ReactSharedInternals = React5.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED;
+          var ReactSharedInternals = React6.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED;
           function error(format) {
             {
               {
@@ -24465,11 +24465,11 @@
               return jsxWithValidation(type, props, key, false);
             }
           }
-          var jsx4 = jsxWithValidationDynamic;
-          var jsxs2 = jsxWithValidationStatic;
+          var jsx5 = jsxWithValidationDynamic;
+          var jsxs4 = jsxWithValidationStatic;
           exports.Fragment = REACT_FRAGMENT_TYPE;
-          exports.jsx = jsx4;
-          exports.jsxs = jsxs2;
+          exports.jsx = jsx5;
+          exports.jsxs = jsxs4;
         })();
       }
     }
@@ -24488,7 +24488,7 @@
   });
 
   // app/javascript/src/index.tsx
-  var import_react2 = __toESM(require_react());
+  var import_react3 = __toESM(require_react());
   var import_client = __toESM(require_client());
 
   // node_modules/react-router-dom/dist/index.js
@@ -25253,6 +25253,13 @@
       (!!options.replace ? navigator2.replace : navigator2.push)(path, options.state, options);
     }, [basename, navigator2, routePathnamesJson, locationPathname, dataRouterContext]);
     return navigate;
+  }
+  function useParams() {
+    let {
+      matches
+    } = React.useContext(RouteContext);
+    let routeMatch = matches[matches.length - 1];
+    return routeMatch ? routeMatch.params : {};
   }
   function useResolvedPath(to, _temp2) {
     let {
@@ -26434,24 +26441,70 @@
         /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("small", { children: [
           "Created at: ",
           new Date(project.created_at).toLocaleDateString()
-        ] })
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Link, { to: `/projects/${project.id}`, children: "View Project" })
       ] }, project.id)) })
     ] });
   };
   var Projects_default = Projects;
 
-  // app/javascript/src/App.tsx
+  // app/javascript/src/Components/ShowProject.tsx
+  var import_react2 = __toESM(require_react());
   var import_jsx_runtime2 = __toESM(require_jsx_runtime());
+  var ShowProject = () => {
+    const { id } = useParams();
+    const [project, setProject] = (0, import_react2.useState)(null);
+    const [tasks, setTasks] = (0, import_react2.useState)([]);
+    (0, import_react2.useEffect)(() => {
+      const fetchProject = async () => {
+        try {
+          const response = await fetch(`/api/v1/projects/${id}`);
+          const data = await response.json();
+          setProject(data.project);
+          setTasks(data.tasks);
+        } catch (error) {
+          console.error("Error fetching project:", error);
+        }
+      };
+      fetchProject();
+    }, [id]);
+    if (!project) return /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("p", { children: "Loading..." });
+    return /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("div", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("h1", { children: project.name }),
+      /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("p", { children: project.description }),
+      /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("h2", { children: "Tasks" }),
+      tasks.length === 0 ? /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("p", { children: "No tasks yet." }) : /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("ul", { children: tasks.map((task) => /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("li", { children: [
+        task.title,
+        " - ",
+        task.completed ? "Completed" : "Pending",
+        /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("h3", { children: "Comments" }),
+        task.comments.length === 0 ? /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("p", { children: "No comments yet." }) : /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("ul", { children: task.comments.map((comment) => /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("li", { children: [
+          comment.content,
+          " - ",
+          comment.user.name
+        ] }, comment.id)) })
+      ] }, task.id)) })
+    ] });
+  };
+  var ShowProject_default = ShowProject;
+
+  // app/javascript/src/App.tsx
+  var import_jsx_runtime3 = __toESM(require_jsx_runtime());
   var App = () => {
-    return /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(import_jsx_runtime2.Fragment, { children: /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(BrowserRouter, { children: /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(Routes, { children: /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(Route, { path: "/", element: /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(Projects_default, {}) }) }) }) });
+    return /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(BrowserRouter, { children: /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)(Routes, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(Route, { path: "/", element: /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(Projects_default, {}) }),
+      /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(Route, { path: "/projects", element: /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(Projects_default, {}) }),
+      " ",
+      /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(Route, { path: "/projects/:id", element: /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(ShowProject_default, {}) })
+    ] }) });
   };
   var App_default = App;
 
   // app/javascript/src/index.tsx
-  var import_jsx_runtime3 = __toESM(require_jsx_runtime());
+  var import_jsx_runtime4 = __toESM(require_jsx_runtime());
   var root = import_client.default.createRoot(document.getElementById("root"));
   root.render(
-    /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(import_react2.default.StrictMode, { children: /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(import_react2.Suspense, { fallback: /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("div", { children: "Loading..." }), children: /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(App_default, {}) }) })
+    /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(import_react3.default.StrictMode, { children: /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(import_react3.Suspense, { fallback: /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("div", { children: "Loading..." }), children: /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(App_default, {}) }) })
   );
 })();
 /*! Bundled license information:
