@@ -30,8 +30,6 @@ gem 'bootsnap', '>= 1.18.3', require: false
 
 gem 'devise', '~> 4.9', '>= 4.9.4'
 
-gem 'activeadmin', '~> 3.2', '>= 3.2.5'
-
 # gem 'sentry-raven', '~> 3.1'
 gem 'sentry-ruby', '~> 5.20', '>= 5.20.1'
 gem 'sentry-rails', '~> 5.20', '>= 5.20.1'

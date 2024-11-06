@@ -1085,7 +1085,7 @@
             }
             return dispatcher.useContext(Context);
           }
-          function useState3(initialState) {
+          function useState4(initialState) {
             var dispatcher = resolveDispatcher();
             return dispatcher.useState(initialState);
           }
@@ -1097,7 +1097,7 @@
             var dispatcher = resolveDispatcher();
             return dispatcher.useRef(initialValue);
           }
-          function useEffect3(create, deps) {
+          function useEffect4(create, deps) {
             var dispatcher = resolveDispatcher();
             return dispatcher.useEffect(create, deps);
           }
@@ -1880,7 +1880,7 @@
           exports.useContext = useContext3;
           exports.useDebugValue = useDebugValue;
           exports.useDeferredValue = useDeferredValue;
-          exports.useEffect = useEffect3;
+          exports.useEffect = useEffect4;
           exports.useId = useId;
           exports.useImperativeHandle = useImperativeHandle;
           exports.useInsertionEffect = useInsertionEffect;
@@ -1888,7 +1888,7 @@
           exports.useMemo = useMemo3;
           exports.useReducer = useReducer;
           exports.useRef = useRef3;
-          exports.useState = useState3;
+          exports.useState = useState4;
           exports.useSyncExternalStore = useSyncExternalStore;
           exports.useTransition = useTransition;
           exports.version = ReactVersion;
@@ -2384,9 +2384,9 @@
           if (typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ !== "undefined" && typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart === "function") {
             __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart(new Error());
           }
-          var React4 = require_react();
+          var React5 = require_react();
           var Scheduler = require_scheduler();
-          var ReactSharedInternals = React4.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED;
+          var ReactSharedInternals = React5.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED;
           var suppressWarning = false;
           function setSuppressWarning(newSuppressWarning) {
             {
@@ -3993,7 +3993,7 @@
             {
               if (props.value == null) {
                 if (typeof props.children === "object" && props.children !== null) {
-                  React4.Children.forEach(props.children, function(child) {
+                  React5.Children.forEach(props.children, function(child) {
                     if (child == null) {
                       return;
                     }
@@ -23589,7 +23589,7 @@
       if (true) {
         (function() {
           "use strict";
-          var React4 = require_react();
+          var React5 = require_react();
           var REACT_ELEMENT_TYPE = Symbol.for("react.element");
           var REACT_PORTAL_TYPE = Symbol.for("react.portal");
           var REACT_FRAGMENT_TYPE = Symbol.for("react.fragment");
@@ -23615,7 +23615,7 @@
             }
             return null;
           }
-          var ReactSharedInternals = React4.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED;
+          var ReactSharedInternals = React5.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED;
           function error(format) {
             {
               {
@@ -24465,11 +24465,11 @@
               return jsxWithValidation(type, props, key, false);
             }
           }
-          var jsx3 = jsxWithValidationDynamic;
-          var jsxs = jsxWithValidationStatic;
+          var jsx4 = jsxWithValidationDynamic;
+          var jsxs2 = jsxWithValidationStatic;
           exports.Fragment = REACT_FRAGMENT_TYPE;
-          exports.jsx = jsx3;
-          exports.jsxs = jsxs;
+          exports.jsx = jsx4;
+          exports.jsxs = jsxs2;
         })();
       }
     }
@@ -24488,7 +24488,7 @@
   });
 
   // app/javascript/src/index.tsx
-  var import_react = __toESM(require_react());
+  var import_react2 = __toESM(require_react());
   var import_client = __toESM(require_client());
 
   // node_modules/react-router-dom/dist/index.js
@@ -26418,18 +26418,40 @@
     return matchPath(path.pathname, nextPath) != null || matchPath(path.pathname, currentPath) != null;
   }
 
-  // app/javascript/src/App.tsx
+  // app/javascript/src/Components/Projects.tsx
+  var import_react = __toESM(require_react());
   var import_jsx_runtime = __toESM(require_jsx_runtime());
+  var Projects = () => {
+    const [projects, setProjects] = (0, import_react.useState)([]);
+    (0, import_react.useEffect)(() => {
+      fetch("/api/v1/projects").then((response) => response.json()).then((data) => setProjects(data)).catch((error) => console.error("Error fetching projects:", error));
+    }, []);
+    return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime.jsx)("h2", { children: "Projects" }),
+      /* @__PURE__ */ (0, import_jsx_runtime.jsx)("ul", { children: projects.map((project) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime.jsx)("h3", { children: project.name }),
+        /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { children: project.description }),
+        /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("small", { children: [
+          "Created at: ",
+          new Date(project.created_at).toLocaleDateString()
+        ] })
+      ] }, project.id)) })
+    ] });
+  };
+  var Projects_default = Projects;
+
+  // app/javascript/src/App.tsx
+  var import_jsx_runtime2 = __toESM(require_jsx_runtime());
   var App = () => {
-    return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(import_jsx_runtime.Fragment, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(BrowserRouter, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Routes, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Route, { path: "/", element: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "container", children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("h1", { className: "greeting", children: "Hello World!!" }) }) }) }) }) });
+    return /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(import_jsx_runtime2.Fragment, { children: /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(BrowserRouter, { children: /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(Routes, { children: /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(Route, { path: "/", element: /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(Projects_default, {}) }) }) }) });
   };
   var App_default = App;
 
   // app/javascript/src/index.tsx
-  var import_jsx_runtime2 = __toESM(require_jsx_runtime());
+  var import_jsx_runtime3 = __toESM(require_jsx_runtime());
   var root = import_client.default.createRoot(document.getElementById("root"));
   root.render(
-    /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(import_react.default.StrictMode, { children: /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(import_react.Suspense, { fallback: /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("div", { children: "Loading..." }), children: /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(App_default, {}) }) })
+    /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(import_react2.default.StrictMode, { children: /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(import_react2.Suspense, { fallback: /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("div", { children: "Loading..." }), children: /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(App_default, {}) }) })
   );
 })();
 /*! Bundled license information:
