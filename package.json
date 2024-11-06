@@ -1,0 +1,22 @@
+{
+  "name": "tech_talks",
+  "private": true,
+  "devDependencies": {
+    "@types/react": "^18.3.10",
+    "@types/react-dom": "^18.3.0",
+    "@types/react-router-dom": "^5.3.3",
+    "esbuild": "^0.24.0",
+    "prettier": "^3.3.3"
+  },
+  "scripts": {
+    "prettier-format": "prettier --config .prettierrc 'app/javascript/react/src/**/*.tsx' --write",
+    "check-types": "tsc --project tsconfig.json --noEmit --watch --preserveWatchOutput",
+    "build": "esbuild app/javascript/*.* --bundle --sourcemap --outdir=app/assets/builds --public-path=/assets --loader:.jpg=dataurl --loader:.png=dataurl --loader:.svg=dataurl"
+  },
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.26.2",
+    "typescript": "^5.6.2"
+  }
+}

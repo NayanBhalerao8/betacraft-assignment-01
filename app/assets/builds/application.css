@@ -1,0 +1,14 @@
+/* app/javascript/src/App.css */
+.container {
+  padding: 10px;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  border: red 1px solid;
+}
+.greeting {
+  font-size: 20px;
+  color: #fff;
+  background-color: #000;
+}
+/*# sourceMappingURL=/assets/application.css.map */

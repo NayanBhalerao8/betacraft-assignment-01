@@ -1,0 +1,22 @@
+require: rubocop-rails
+
+AllCops:
+  TargetRubyVersion: 3.3.0
+
+Style/FrozenStringLiteralComment:
+  EnforcedStyle: never
+
+Style/Lambda:
+  EnforcedStyle: literal
+
+Style/TernaryParentheses:
+  EnforcedStyle: require_parentheses_when_complex
+
+# Layout/IndentationConsistency:
+#   EnforcedStyle: indented_internal_methods
+
+Layout/EmptyLinesAroundClassBody:
+  EnforcedStyle: beginning_only
+
+Layout/EmptyLinesAroundModuleBody:
+  EnforcedStyle: empty_lines_except_namespace
