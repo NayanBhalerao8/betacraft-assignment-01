@@ -10,7 +10,7 @@ interface Comment {
 }
 
 interface CommentCreateProps {
-  projectId: number; // Add projectId to props
+  projectId: number; // Adding projectId to props
   taskId: number;
   onCommentCreated: (newComment: Comment) => void;
 }

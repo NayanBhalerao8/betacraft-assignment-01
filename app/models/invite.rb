@@ -19,13 +19,9 @@
 #  fk_rails_...  (project_id => projects.id)
 #
 class Invite < ApplicationRecord
-  self.ignored_columns += ["inviter_id"]
-  belongs_to :user
   belongs_to :project
-  belongs_to :inviter, class_name: 'User'
-  
-  validates :invitee_email, presence: true, format: { with: URI::MailTo::EMAIL_REGEXP }
-  validates :status, inclusion: { in: %w[pending accepted rejected] }
+  belongs_to :inviter, class_name: 'User' # assuming inviter is the user who sent the invite
+  belongs_to :invitee, class_name: 'User', optional: true # if you want to link the invitee later
 
   # Scope to get pending invites
   scope :pending, -> { where(status: 'pending') }
