@@ -1089,7 +1089,7 @@
             }
             return dispatcher.useContext(Context);
           }
-          function useState6(initialState) {
+          function useState7(initialState) {
             var dispatcher = resolveDispatcher();
             return dispatcher.useState(initialState);
           }
@@ -1101,7 +1101,7 @@
             var dispatcher = resolveDispatcher();
             return dispatcher.useRef(initialValue);
           }
-          function useEffect5(create, deps) {
+          function useEffect6(create, deps) {
             var dispatcher = resolveDispatcher();
             return dispatcher.useEffect(create, deps);
           }
@@ -1884,7 +1884,7 @@
           exports.useContext = useContext3;
           exports.useDebugValue = useDebugValue;
           exports.useDeferredValue = useDeferredValue;
-          exports.useEffect = useEffect5;
+          exports.useEffect = useEffect6;
           exports.useId = useId;
           exports.useImperativeHandle = useImperativeHandle;
           exports.useInsertionEffect = useInsertionEffect;
@@ -1892,7 +1892,7 @@
           exports.useMemo = useMemo3;
           exports.useReducer = useReducer;
           exports.useRef = useRef3;
-          exports.useState = useState6;
+          exports.useState = useState7;
           exports.useSyncExternalStore = useSyncExternalStore;
           exports.useTransition = useTransition;
           exports.version = ReactVersion;
@@ -2388,9 +2388,9 @@
           if (typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ !== "undefined" && typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart === "function") {
             __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart(new Error());
           }
-          var React7 = require_react();
+          var React8 = require_react();
           var Scheduler = require_scheduler();
-          var ReactSharedInternals = React7.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED;
+          var ReactSharedInternals = React8.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED;
           var suppressWarning = false;
           function setSuppressWarning(newSuppressWarning) {
             {
@@ -3997,7 +3997,7 @@
             {
               if (props.value == null) {
                 if (typeof props.children === "object" && props.children !== null) {
-                  React7.Children.forEach(props.children, function(child) {
+                  React8.Children.forEach(props.children, function(child) {
                     if (child == null) {
                       return;
                     }
@@ -23593,7 +23593,7 @@
       if (true) {
         (function() {
           "use strict";
-          var React7 = require_react();
+          var React8 = require_react();
           var REACT_ELEMENT_TYPE = Symbol.for("react.element");
           var REACT_PORTAL_TYPE = Symbol.for("react.portal");
           var REACT_FRAGMENT_TYPE = Symbol.for("react.fragment");
@@ -23619,7 +23619,7 @@
             }
             return null;
           }
-          var ReactSharedInternals = React7.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED;
+          var ReactSharedInternals = React8.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED;
           function error(format) {
             {
               {
@@ -24469,11 +24469,11 @@
               return jsxWithValidation(type, props, key, false);
             }
           }
-          var jsx6 = jsxWithValidationDynamic;
-          var jsxs5 = jsxWithValidationStatic;
+          var jsx7 = jsxWithValidationDynamic;
+          var jsxs6 = jsxWithValidationStatic;
           exports.Fragment = REACT_FRAGMENT_TYPE;
-          exports.jsx = jsx6;
-          exports.jsxs = jsxs5;
+          exports.jsx = jsx7;
+          exports.jsxs = jsxs6;
         })();
       }
     }
@@ -24492,7 +24492,7 @@
   });
 
   // app/javascript/src/index.tsx
-  var import_react4 = __toESM(require_react());
+  var import_react5 = __toESM(require_react());
   var import_client = __toESM(require_client());
 
   // node_modules/react-router-dom/dist/index.js
@@ -26441,6 +26441,7 @@
       /* @__PURE__ */ (0, import_jsx_runtime.jsx)("h2", { children: "Projects" }),
       /* @__PURE__ */ (0, import_jsx_runtime.jsx)("ul", { children: projects.map((project) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("li", { children: [
         /* @__PURE__ */ (0, import_jsx_runtime.jsx)("h3", { children: project.name }),
+        /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {}),
         /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { children: project.description }),
         /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("small", { children: [
           "Created at: ",
@@ -26453,7 +26454,7 @@
   var Projects_default = Projects;
 
   // app/javascript/src/Components/ShowProject.tsx
-  var import_react3 = __toESM(require_react());
+  var import_react4 = __toESM(require_react());
 
   // node_modules/axios/lib/helpers/bind.js
   function bind(fn, thisArg) {
@@ -28971,32 +28972,35 @@
   // app/javascript/src/Components/TaskCreate.tsx
   var import_react2 = __toESM(require_react());
   var import_jsx_runtime2 = __toESM(require_jsx_runtime());
-  var TaskCreate = ({ projectId, onTaskCreated }) => {
+  var TaskCreate = ({ projectId, taskId, onTaskCreated }) => {
     const [title, setTitle] = (0, import_react2.useState)("");
     const [description, setDescription] = (0, import_react2.useState)("");
     const [completed, setCompleted] = (0, import_react2.useState)(false);
+    const [commentContent, setCommentContent] = (0, import_react2.useState)("");
+    const [userId, setUserId] = (0, import_react2.useState)(1);
     const handleSubmit = (e) => {
       e.preventDefault();
       const csrfTokenMeta = document.querySelector('meta[name="csrf-token"]');
-      let csrfToken = null;
+      let csrfToken = csrfTokenMeta ? csrfTokenMeta.getAttribute("content") : null;
       if (csrfTokenMeta) {
         csrfToken = csrfTokenMeta.getAttribute("content");
       } else {
         console.error("CSRF token meta tag not found!");
       }
-      const taskData = { title, description, completed };
-      axios_default.post(`/api/v1/projects/${projectId}/tasks`, { task: taskData }, {
+      const commentData = {
+        content: commentContent,
+        // The comment text
+        user_id: userId
+        // The user ID (ensure it's valid)
+      };
+      axios_default.post(`/api/v1/projects/${projectId}/tasks/${taskId}/comments`, { comment: commentData }, {
         headers: {
           "X-CSRF-Token": csrfToken
         }
       }).then((response) => {
-        console.log("Task created:", response.data);
-        onTaskCreated(response.data);
-        setTitle("");
-        setDescription("");
-        setCompleted(false);
+        console.log("Comment created:", response.data);
       }).catch((error) => {
-        console.error("Error creating task:", error);
+        console.error("Error creating comment:", error);
       });
     };
     return /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("form", { onSubmit: handleSubmit, children: [
@@ -29035,18 +29039,80 @@
           }
         )
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("button", { type: "submit", children: "Create Task" })
+      /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("label", { children: [
+        "Comment:",
+        /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(
+          "input",
+          {
+            type: "text",
+            value: commentContent,
+            onChange: (e) => setCommentContent(e.target.value),
+            required: true
+          }
+        )
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("button", { type: "submit", children: "Create Task and Comment" })
     ] });
   };
   var TaskCreate_default = TaskCreate;
 
-  // app/javascript/src/Components/ShowProject.tsx
+  // app/javascript/src/Components/TaskComments.tsx
+  var import_react3 = __toESM(require_react());
   var import_jsx_runtime3 = __toESM(require_jsx_runtime());
-  var ShowProject = () => {
-    const { id } = useParams();
-    const [project, setProject] = (0, import_react3.useState)(null);
+  var TaskComments = ({ taskId }) => {
+    const [comments, setComments] = (0, import_react3.useState)([]);
+    const [newComment, setNewComment] = (0, import_react3.useState)("");
     const [loading, setLoading] = (0, import_react3.useState)(true);
     (0, import_react3.useEffect)(() => {
+      axios_default.get(`/api/v1/tasks/${taskId}/comments`).then((response) => {
+        setComments(Array.isArray(response.data) ? response.data : []);
+        setLoading(false);
+      }).catch((error) => {
+        console.error("Error fetching comments:", error);
+        setLoading(false);
+        setComments([]);
+      });
+    }, [taskId]);
+    const handleSubmit = (e) => {
+      e.preventDefault();
+      if (newComment.trim()) {
+        axios_default.post(`/api/v1/tasks/${taskId}/comments`, { comment: { text: newComment } }).then((response) => {
+          const newCommentData = response.data;
+          setComments((prevComments) => [...prevComments, newCommentData]);
+          setNewComment("");
+        }).catch((error) => {
+          console.error("Error adding comment:", error);
+        });
+      }
+    };
+    if (loading) return /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("div", { children: "Loading comments..." });
+    return /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("h4", { children: "Comments" }),
+      comments.length === 0 ? /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("p", { children: "No comments available." }) : /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("ul", { children: comments.map((comment) => /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("li", { children: comment.text }, comment.id)) }),
+      /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("form", { onSubmit: handleSubmit, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(
+          "textarea",
+          {
+            value: newComment,
+            onChange: (e) => setNewComment(e.target.value),
+            placeholder: "Add a comment...",
+            rows: 3,
+            style: { width: "100%" }
+          }
+        ),
+        /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("button", { type: "submit", disabled: !newComment.trim(), children: "Add Comment" })
+      ] })
+    ] });
+  };
+  var TaskComments_default = TaskComments;
+
+  // app/javascript/src/Components/ShowProject.tsx
+  var import_jsx_runtime4 = __toESM(require_jsx_runtime());
+  var ShowProject = () => {
+    const { id } = useParams();
+    const [project, setProject] = (0, import_react4.useState)(null);
+    const [loading, setLoading] = (0, import_react4.useState)(true);
+    (0, import_react4.useEffect)(() => {
       if (!id) return;
       axios_default.get(`/api/v1/projects/${id}`).then((response) => {
         const projectData = response.data;
@@ -29058,22 +29124,7 @@
       });
     }, [id]);
     const updateTask = (taskId, completed) => {
-      const csrfTokenMeta = document.querySelector('meta[name="csrf-token"]');
-      let csrfToken = null;
-      if (csrfTokenMeta) {
-        csrfToken = csrfTokenMeta.getAttribute("content");
-      } else {
-        console.error("CSRF token meta tag not found!");
-      }
-      axios_default.put(
-        `/api/v1/projects/${id}/tasks/${taskId}`,
-        { task: { completed } },
-        {
-          headers: {
-            "X-CSRF-Token": csrfToken
-          }
-        }
-      ).then((response) => {
+      axios_default.put(`/api/v1/tasks/${taskId}`, { task: { completed } }).then((response) => {
         const updatedTask = response.data;
         setProject((prevProject) => {
           if (prevProject) {
@@ -29088,32 +29139,29 @@
         console.error("Error updating task:", error);
       });
     };
-    if (loading) return /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("div", { children: "Loading..." });
-    if (!project) return /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("div", { children: "Project not found" });
-    return /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("h1", { children: project.name }),
-      /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("p", { children: project.description }),
-      /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("h2", { children: "Tasks" }),
-      project.tasks.length > 0 ? project.tasks.map((task) => /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("h3", { children: task.title }),
-        /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("p", { children: task.description }),
-        /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("p", { children: [
+    if (loading) return /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("div", { children: "Loading..." });
+    if (!project) return /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("div", { children: "Project not found" });
+    return /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)("div", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("h1", { children: project.name }),
+      /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("p", { children: project.description }),
+      /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("h2", { children: "Tasks" }),
+      project.tasks && project.tasks.length > 0 ? project.tasks.map((task) => /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)("div", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("h3", { children: task.title }),
+        /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)("p", { children: [
           "Completed: ",
           task.completed ? "Yes" : "No"
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("label", { children: [
-          "Completed:",
-          /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(
-            "input",
-            {
-              type: "checkbox",
-              checked: task.completed,
-              onChange: (e) => updateTask(task.id, e.target.checked)
-            }
-          )
-        ] })
-      ] }, task.id)) : /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("p", { children: "No tasks available." }),
-      /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(
+        /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(
+          "input",
+          {
+            type: "checkbox",
+            checked: task.completed,
+            onChange: (e) => updateTask(task.id, e.target.checked)
+          }
+        ),
+        /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(TaskComments_default, { taskId: task.id })
+      ] }, task.id)) : /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("p", { children: "No tasks available." }),
+      /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(
         TaskCreate_default,
         {
           projectId: id || "",
@@ -29132,22 +29180,22 @@
   var ShowProject_default = ShowProject;
 
   // app/javascript/src/App.tsx
-  var import_jsx_runtime4 = __toESM(require_jsx_runtime());
+  var import_jsx_runtime5 = __toESM(require_jsx_runtime());
   var App = () => {
-    return /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(BrowserRouter, { children: /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)(Routes, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(Route, { path: "/", element: /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(Projects_default, {}) }),
-      /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(Route, { path: "/projects", element: /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(Projects_default, {}) }),
+    return /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(BrowserRouter, { children: /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)(Routes, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(Route, { path: "/", element: /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(Projects_default, {}) }),
+      /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(Route, { path: "/projects", element: /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(Projects_default, {}) }),
       " ",
-      /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(Route, { path: "/projects/:id", element: /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(ShowProject_default, {}) })
+      /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(Route, { path: "/projects/:id", element: /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(ShowProject_default, {}) })
     ] }) });
   };
   var App_default = App;
 
   // app/javascript/src/index.tsx
-  var import_jsx_runtime5 = __toESM(require_jsx_runtime());
+  var import_jsx_runtime6 = __toESM(require_jsx_runtime());
   var root = import_client.default.createRoot(document.getElementById("root"));
   root.render(
-    /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(import_react4.default.StrictMode, { children: /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(import_react4.Suspense, { fallback: /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("div", { children: "Loading..." }), children: /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(App_default, {}) }) })
+    /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_react5.default.StrictMode, { children: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_react5.Suspense, { fallback: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("div", { children: "Loading..." }), children: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(App_default, {}) }) })
   );
 })();
 /*! Bundled license information:

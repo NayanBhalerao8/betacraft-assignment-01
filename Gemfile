@@ -29,6 +29,7 @@ gem 'redis', '~> 5.2'
 gem 'bootsnap', '>= 1.18.3', require: false
 
 gem 'devise', '~> 4.9', '>= 4.9.4'
+gem 'rack-cors'
 
 # gem 'sentry-raven', '~> 3.1'
 gem 'sentry-ruby', '~> 5.20', '>= 5.20.1'

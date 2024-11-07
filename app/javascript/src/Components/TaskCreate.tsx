@@ -2,9 +2,11 @@ import React, { useState, FormEvent } from 'react';
 import axios from 'axios';
 
 interface TaskCreateProps {
-  projectId: string;
-  onTaskCreated: (newTask: Task) => void;
+    projectId: string;
+    onTaskCreated: (newTask: Task) => void;
+    taskId?: string;  // Make taskId optional
 }
+  
 
 interface Task {
   id: number;
@@ -13,45 +15,53 @@ interface Task {
   completed: boolean;
 }
 
-const TaskCreate: React.FC<TaskCreateProps> = ({ projectId, onTaskCreated }) => {
+interface Comment {
+  content: string;
+  user_id: number; // Assuming user_id is required, adjust as needed
+}
+
+const TaskCreate: React.FC<TaskCreateProps> = ({ projectId, taskId, onTaskCreated }) => {
   const [title, setTitle] = useState<string>('');
   const [description, setDescription] = useState<string>('');
   const [completed, setCompleted] = useState<boolean>(false);
+  const [commentContent, setCommentContent] = useState<string>('');  // For comment content
+  const [userId, setUserId] = useState<number>(1); // Assuming a static user ID for now, adjust as needed
+
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-
+  
     const csrfTokenMeta = document.querySelector('meta[name="csrf-token"]');
-    let csrfToken: string | null = null;
-
+    let csrfToken = csrfTokenMeta ? csrfTokenMeta.getAttribute('content') : null;
+  
     if (csrfTokenMeta) {
       csrfToken = csrfTokenMeta.getAttribute('content');
     } else {
       console.error('CSRF token meta tag not found!');
     }
-
-    // Prepare task data
-    const taskData: Omit<Task, 'id'> = { title, description, completed };
-
-    // Send POST request
-    axios.post(`/api/v1/projects/${projectId}/tasks`, { task: taskData }, {
-      headers: {
-        'X-CSRF-Token': csrfToken,
-      },
-    })
+  
+    // Prepare comment data
+    const commentData = {
+        content: commentContent,  // The comment text
+        user_id: userId,          // The user ID (ensure it's valid)
+      };
+      
+  
+    // Send POST request to create a comment
+    axios.post(`/api/v1/projects/${projectId}/tasks/${taskId}/comments`, { comment: commentData }, {
+        headers: {
+            'X-CSRF-Token': csrfToken,
+        },
+    })      
+           
     .then((response) => {
-      console.log("Task created:", response.data);
-      // Cast response.data to Task type
-      onTaskCreated(response.data as Task);
-      setTitle('');
-      setDescription('');
-      setCompleted(false);
+      console.log("Comment created:", response.data);
     })
     .catch((error) => {
-      console.error("Error creating task:", error);
+      console.error("Error creating comment:", error);
     });
   };
-
+  
   return (
     <form onSubmit={handleSubmit}>
       <label>
@@ -80,7 +90,19 @@ const TaskCreate: React.FC<TaskCreateProps> = ({ projectId, onTaskCreated }) => 
           onChange={(e) => setCompleted(e.target.checked)} 
         />
       </label>
-      <button type="submit">Create Task</button>
+      
+      {/* Add Comment Section */}
+      <label>
+        Comment:
+        <input 
+          type="text" 
+          value={commentContent} 
+          onChange={(e) => setCommentContent(e.target.value)} 
+          required 
+        />
+      </label>
+
+      <button type="submit">Create Task and Comment</button>
     </form>
   );
 };
