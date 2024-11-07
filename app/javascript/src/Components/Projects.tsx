@@ -49,7 +49,6 @@ const Projects: React.FC = () => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        // Add the token if needed for authentication
         'Authorization': `Bearer ${localStorage.getItem('jwt_token')}`,
       },
       body: JSON.stringify({
@@ -70,17 +69,17 @@ const Projects: React.FC = () => {
   };
 
   if (error) {
-    return <div>Error: {error}</div>;
+    return <div className="text-red-500">{error}</div>;
   }
 
   return (
-    <div>
-      <h2>Projects</h2>
+    <div className="container mx-auto p-6">
+      <h2 className="text-3xl font-semibold mb-8">Projects  : </h2>
 
       {/* Create New Project Form */}
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="name">Project Name:</label>
+      <form onSubmit={handleSubmit} className="bg-white p-8 rounded-lg shadow-md mb-8 w-full">
+        <div className="mb-6">
+          <label htmlFor="name" className="block text-lg font-medium mb-2">Project Name:</label>
           <input
             type="text"
             id="name"
@@ -88,38 +87,52 @@ const Projects: React.FC = () => {
             value={newProject.name}
             onChange={handleInputChange}
             required
+            className="p-3 border border-gray-300 rounded w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
-        </div>
-        <div>
-          <label htmlFor="description">Project Description:</label>
+        </div><br></br>
+        <div className="mb-6">
+          <label htmlFor="description" className="block text-lg font-medium mb-2">Project Description:</label>
           <textarea
             id="description"
             name="description"
             value={newProject.description}
             onChange={handleInputChange}
             required
+            className="p-3 border border-gray-300 rounded w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
-        </div>
-        <button type="submit" disabled={isSubmitting}>
+        </div><br></br>
+        <button
+          type="submit"
+          disabled={isSubmitting}
+          className="w-full py-3 px-4 bg-blue-500 text-white rounded hover:bg-blue-700 disabled:bg-gray-400 transition duration-200"
+        >
           {isSubmitting ? 'Creating...' : 'Create Project'}
         </button>
       </form>
 
+      {/* Projects List */}
       {projects.length === 0 ? (
-        <p>No projects available</p>
+        <p className="text-gray-500">No projects available</p>
       ) : (
-        <ul>
+        <ul className="space-y-6">
           {projects.map((project) => (
-            <li key={project.id}>
-              <h3>{project.name}</h3>
-              <p>{project.description}</p>
-              <small>Created at: {new Date(project.created_at).toLocaleDateString()}</small>
-              <Link to={`/projects/${project.id}`}>View Project</Link>
+            <li key={project.id} className="bg-white p-6 rounded-lg shadow-md">
+              <h3 className="text-xl font-semibold">{project.name}</h3>
+              <p className="text-gray-700 mt-2">{project.description}</p>
+              <small className="text-gray-500 block mt-2">Created at: {new Date(project.created_at).toLocaleDateString()}</small>
+              <Link
+                to={`/projects/${project.id}`}
+                className="text-blue-500 hover:text-blue-700 mt-4 inline-block"
+              ><br></br>
+                View Project
+              </Link>
             </li>
           ))}
         </ul>
       )}
     </div>
+
+
   );
 };
 

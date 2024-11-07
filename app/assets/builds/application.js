@@ -26462,7 +26462,6 @@
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          // Add the token if needed for authentication
           "Authorization": `Bearer ${localStorage.getItem("jwt_token")}`
         },
         body: JSON.stringify({
@@ -26479,16 +26478,13 @@
       });
     };
     if (error) {
-      return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [
-        "Error: ",
-        error
-      ] });
+      return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "text-red-500", children: error });
     }
-    return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime.jsx)("h2", { children: "Projects" }),
-      /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("form", { onSubmit: handleSubmit, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [
-          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("label", { htmlFor: "name", children: "Project Name:" }),
+    return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { className: "container mx-auto p-6", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime.jsx)("h2", { className: "text-3xl font-semibold mb-8", children: "Projects  : " }),
+      /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("form", { onSubmit: handleSubmit, className: "bg-white p-8 rounded-lg shadow-md mb-8 w-full", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { className: "mb-6", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("label", { htmlFor: "name", className: "block text-lg font-medium mb-2", children: "Project Name:" }),
           /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
             "input",
             {
@@ -26497,12 +26493,14 @@
               name: "name",
               value: newProject.name,
               onChange: handleInputChange,
-              required: true
+              required: true,
+              className: "p-3 border border-gray-300 rounded w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
             }
           )
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [
-          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("label", { htmlFor: "description", children: "Project Description:" }),
+        /* @__PURE__ */ (0, import_jsx_runtime.jsx)("br", {}),
+        /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { className: "mb-6", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("label", { htmlFor: "description", className: "block text-lg font-medium mb-2", children: "Project Description:" }),
           /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
             "textarea",
             {
@@ -26510,20 +26508,40 @@
               name: "description",
               value: newProject.description,
               onChange: handleInputChange,
-              required: true
+              required: true,
+              className: "p-3 border border-gray-300 rounded w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
             }
           )
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", { type: "submit", disabled: isSubmitting, children: isSubmitting ? "Creating..." : "Create Project" })
+        /* @__PURE__ */ (0, import_jsx_runtime.jsx)("br", {}),
+        /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
+          "button",
+          {
+            type: "submit",
+            disabled: isSubmitting,
+            className: "w-full py-3 px-4 bg-blue-500 text-white rounded hover:bg-blue-700 disabled:bg-gray-400 transition duration-200",
+            children: isSubmitting ? "Creating..." : "Create Project"
+          }
+        )
       ] }),
-      projects.length === 0 ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { children: "No projects available" }) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)("ul", { children: projects.map((project) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime.jsx)("h3", { children: project.name }),
-        /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { children: project.description }),
-        /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("small", { children: [
+      projects.length === 0 ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { className: "text-gray-500", children: "No projects available" }) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)("ul", { className: "space-y-6", children: projects.map((project) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("li", { className: "bg-white p-6 rounded-lg shadow-md", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime.jsx)("h3", { className: "text-xl font-semibold", children: project.name }),
+        /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { className: "text-gray-700 mt-2", children: project.description }),
+        /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("small", { className: "text-gray-500 block mt-2", children: [
           "Created at: ",
           new Date(project.created_at).toLocaleDateString()
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Link, { to: `/projects/${project.id}`, children: "View Project" })
+        /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(
+          Link,
+          {
+            to: `/projects/${project.id}`,
+            className: "text-blue-500 hover:text-blue-700 mt-4 inline-block",
+            children: [
+              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("br", {}),
+              "View Project"
+            ]
+          }
+        )
       ] }, project.id)) })
     ] });
   };
@@ -29150,7 +29168,7 @@
     };
     if (loading) return /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("div", { children: "Loading comments..." });
     return /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("h4", { children: "Comments" }),
+      /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("h2", { children: "Comments" }),
       comments.length === 0 ? /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("p", { children: "No comments available." }) : /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("ul", { children: comments.map((comment) => /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("li", { children: [
         /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("strong", { children: comment.user_name }),
         " - ",
@@ -29215,8 +29233,25 @@
     if (loading) return /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("div", { children: "Loading..." });
     if (!project) return /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("div", { children: "Project not found" });
     return /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)("div", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("h1", { children: project.name }),
-      /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("p", { children: project.description }),
+      /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)("h1", { children: [
+        "Project - ",
+        project.name
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)("p", { children: [
+        "Description - ",
+        project.description
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)("div", { className: "border p-4 rounded-lg bg-gray-100", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("h3", { className: "text-lg font-semibold mb-2", children: "Invite Users to This Project" }),
+        /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(
+          Link,
+          {
+            to: `/projects/${id}/invite_others`,
+            className: "text-blue-600 hover:text-blue-800 font-medium",
+            children: "Invite a User"
+          }
+        )
+      ] }),
       /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("h2", { children: "Tasks" }),
       project.tasks && project.tasks.length > 0 ? project.tasks.map((task) => /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)("div", { children: [
         /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("h3", { children: task.title }),
@@ -29224,6 +29259,7 @@
           "Completed: ",
           task.completed ? "Yes" : "No"
         ] }),
+        "Mark as Completed: ",
         /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(
           "input",
           {

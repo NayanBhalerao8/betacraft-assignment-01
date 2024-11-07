@@ -41,19 +41,19 @@ module Api
         def check_invites
           # Get the invites for the current user
           @invites = Invite.where(invitee_email: current_user.email)
-              # Map through each invite and fetch the project_name and user_email
+          # Map through each invite and fetch the project_name and user_email
           invites_with_project_and_user = @invites.map do |invite|
             project_name = invite.project&.name # Fetch project name using project_id
             user_email = invite.user&.email     # Fetch user email using user_id
 
-            # Return the invite data along with project name and user email
+            # Returning the invite data along with project name and user email
             invite.attributes.merge(
               project_name: project_name,
               user_email: user_email
             )
           end
 
-          # Return the modified invites with project and user data as JSON
+          # Returning the modified invites with project and user data as JSON
           render json: invites_with_project_and_user
         end
         

@@ -32,9 +32,6 @@ module Api
 
       private
 
-      # Since authenticate_user! already ensures the user is authenticated,
-      # no need for an explicit set_current_user method.
-      
       def task_params
         params.require(:task).permit(:completed, :title, :description)  # Adjust fields as necessary
       end
