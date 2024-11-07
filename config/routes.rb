@@ -3,7 +3,7 @@ require "sidekiq-scheduler/web"
 
 Rails.application.routes.draw do
 
-  root 'home#index'
+  root to: 'home#index', defaults: { format: :html }
   
   get "up" => "rails/health#show", as: :rails_health_check
 

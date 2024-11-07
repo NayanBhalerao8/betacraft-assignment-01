@@ -35,7 +35,7 @@ module Api
       private
 
       def set_current_user
-        @current_user = User.first  # For now, you can set a placeholder user
+        @current_user = current_user # For now, you can set a placeholder user
       end
 
       def current_user

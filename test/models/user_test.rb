@@ -19,6 +19,11 @@
 #  created_at           :datetime         not null
 #  updated_at           :datetime         not null
 #
+# Indexes
+#
+#  index_users_on_google_uid        (google_uid) UNIQUE
+#  index_users_on_uid_and_provider  (uid,provider) UNIQUE
+#
 require "test_helper"
 
 class UserTest < ActiveSupport::TestCase

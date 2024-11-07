@@ -33,7 +33,7 @@ module Api
     
       def set_current_user
           # Assign the first user from the database to current_user
-          @current_user = User.first
+          @current_user = current_user
       end
         
       def current_user
