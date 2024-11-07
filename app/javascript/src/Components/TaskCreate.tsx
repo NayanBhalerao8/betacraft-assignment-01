@@ -15,18 +15,10 @@ interface Task {
   completed: boolean;
 }
 
-interface Comment {
-  content: string;
-  user_id: number; // Assuming user_id is required, adjust as needed
-}
-
 const TaskCreate: React.FC<TaskCreateProps> = ({ projectId, taskId, onTaskCreated }) => {
   const [title, setTitle] = useState<string>('');
   const [description, setDescription] = useState<string>('');
   const [completed, setCompleted] = useState<boolean>(false);
-  const [commentContent, setCommentContent] = useState<string>('');  // For comment content
-  const [userId, setUserId] = useState<number>(1); // Assuming a static user ID for now, adjust as needed
-
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
@@ -40,28 +32,27 @@ const TaskCreate: React.FC<TaskCreateProps> = ({ projectId, taskId, onTaskCreate
       console.error('CSRF token meta tag not found!');
     }
   
-    // Prepare comment data
-    const commentData = {
-        content: commentContent,  // The comment text
-        user_id: userId,          // The user ID (ensure it's valid)
-      };
-      
+    const taskData = {
+        title,
+        description,
+        completed
+    };
   
-    // Send POST request to create a comment
-    axios.post(`/api/v1/projects/${projectId}/tasks/${taskId}/comments`, { comment: commentData }, {
+    // Send POST request to create a task
+    axios.post<Task>(`/api/v1/projects/${projectId}/tasks`, taskData, {
         headers: {
             'X-CSRF-Token': csrfToken,
         },
     })      
-           
     .then((response) => {
-      console.log("Comment created:", response.data);
+      console.log("Task created:", response.data);
+      onTaskCreated(response.data); // Pass the new task to the parent component
     })
     .catch((error) => {
-      console.error("Error creating comment:", error);
+      console.error("Error creating task:", error);
     });
   };
-  
+
   return (
     <form onSubmit={handleSubmit}>
       <label>
@@ -90,19 +81,7 @@ const TaskCreate: React.FC<TaskCreateProps> = ({ projectId, taskId, onTaskCreate
           onChange={(e) => setCompleted(e.target.checked)} 
         />
       </label>
-      
-      {/* Add Comment Section */}
-      <label>
-        Comment:
-        <input 
-          type="text" 
-          value={commentContent} 
-          onChange={(e) => setCommentContent(e.target.value)} 
-          required 
-        />
-      </label>
-
-      <button type="submit">Create Task and Comment</button>
+      <button type="submit">Create Task</button>
     </form>
   );
 };

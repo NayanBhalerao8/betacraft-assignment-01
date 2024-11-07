@@ -28997,8 +28997,6 @@
     const [title, setTitle] = (0, import_react2.useState)("");
     const [description, setDescription] = (0, import_react2.useState)("");
     const [completed, setCompleted] = (0, import_react2.useState)(false);
-    const [commentContent, setCommentContent] = (0, import_react2.useState)("");
-    const [userId, setUserId] = (0, import_react2.useState)(1);
     const handleSubmit = (e) => {
       e.preventDefault();
       const csrfTokenMeta = document.querySelector('meta[name="csrf-token"]');
@@ -29008,20 +29006,20 @@
       } else {
         console.error("CSRF token meta tag not found!");
       }
-      const commentData = {
-        content: commentContent,
-        // The comment text
-        user_id: userId
-        // The user ID (ensure it's valid)
+      const taskData = {
+        title,
+        description,
+        completed
       };
-      axios_default.post(`/api/v1/projects/${projectId}/tasks/${taskId}/comments`, { comment: commentData }, {
+      axios_default.post(`/api/v1/projects/${projectId}/tasks`, taskData, {
         headers: {
           "X-CSRF-Token": csrfToken
         }
       }).then((response) => {
-        console.log("Comment created:", response.data);
+        console.log("Task created:", response.data);
+        onTaskCreated(response.data);
       }).catch((error) => {
-        console.error("Error creating comment:", error);
+        console.error("Error creating task:", error);
       });
     };
     return /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("form", { onSubmit: handleSubmit, children: [
@@ -29060,19 +29058,7 @@
           }
         )
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("label", { children: [
-        "Comment:",
-        /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(
-          "input",
-          {
-            type: "text",
-            value: commentContent,
-            onChange: (e) => setCommentContent(e.target.value),
-            required: true
-          }
-        )
-      ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("button", { type: "submit", children: "Create Task and Comment" })
+      /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("button", { type: "submit", children: "Create Task" })
     ] });
   };
   var TaskCreate_default = TaskCreate;
