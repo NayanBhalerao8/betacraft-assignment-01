@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_11_07_184112) do
+ActiveRecord::Schema[7.2].define(version: 2024_11_07_210105) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -22,6 +22,16 @@ ActiveRecord::Schema[7.2].define(version: 2024_11_07_184112) do
     t.datetime "updated_at", null: false
     t.index ["task_id"], name: "index_comments_on_task_id"
     t.index ["user_id"], name: "index_comments_on_user_id"
+  end
+
+  create_table "invites", force: :cascade do |t|
+    t.bigint "project_id", null: false
+    t.string "invitee_email", null: false
+    t.string "status", default: "pending"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id"
+    t.index ["project_id"], name: "index_invites_on_project_id"
   end
 
   create_table "projects", force: :cascade do |t|
@@ -67,6 +77,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_11_07_184112) do
 
   add_foreign_key "comments", "tasks"
   add_foreign_key "comments", "users"
+  add_foreign_key "invites", "projects"
   add_foreign_key "projects", "users"
   add_foreign_key "tasks", "projects"
 end

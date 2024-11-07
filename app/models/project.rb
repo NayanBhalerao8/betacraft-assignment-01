@@ -18,6 +18,7 @@
 #  fk_rails_...  (user_id => users.id)
 #
 class Project < ApplicationRecord
+    has_many :invites, dependent: :destroy 
     has_many :tasks
     belongs_to :user
 end

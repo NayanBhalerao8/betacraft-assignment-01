@@ -28,6 +28,7 @@ class User < ApplicationRecord
     validates :google_uid, uniqueness: true
     has_many :projects, dependent: :destroy
     has_many :comments, dependent: :destroy
+    has_many :invites
     validates :uid, uniqueness: { scope: :provider, message: "has already been taken" }
 
     devise :omniauthable, :database_authenticatable, :registerable,
