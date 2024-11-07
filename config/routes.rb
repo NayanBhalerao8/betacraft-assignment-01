@@ -18,7 +18,7 @@ Rails.application.routes.draw do
   # API Routes
   namespace :api do
     namespace :v1 do
-      resources :projects, only: [:index, :show] do
+      resources :projects, only: [:index, :show, :create] do
         resources :tasks, only: [:create, :update, :edit, :show, :index] do
           resources :comments, only: [:index, :create, :update, :edit, :show]  # Nested under tasks
         end

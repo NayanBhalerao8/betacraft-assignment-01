@@ -26435,24 +26435,49 @@
   var Projects = () => {
     const [projects, setProjects] = (0, import_react.useState)([]);
     const [error, setError] = (0, import_react.useState)(null);
+    const [newProject, setNewProject] = (0, import_react.useState)({
+      name: "",
+      description: ""
+    });
+    const [isSubmitting, setIsSubmitting] = (0, import_react.useState)(false);
     (0, import_react.useEffect)(() => {
       fetch("/api/v1/projects").then((response) => {
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
-        return response.text();
-      }).then((text) => {
-        try {
-          const data = JSON.parse(text);
-          setProjects(data);
-        } catch (e) {
-          setError("Failed to parse JSON response.");
-        }
-      }).catch((error2) => {
+        return response.json();
+      }).then((data) => setProjects(data)).catch((error2) => {
         console.error("Error fetching projects:", error2);
         setError("Failed to fetch projects.");
       });
     }, []);
+    const handleInputChange = (e) => {
+      const { name, value } = e.target;
+      setNewProject({ ...newProject, [name]: value });
+    };
+    const handleSubmit = (e) => {
+      e.preventDefault();
+      setIsSubmitting(true);
+      fetch("/api/v1/projects", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          // Add the token if needed for authentication
+          "Authorization": `Bearer ${localStorage.getItem("jwt_token")}`
+        },
+        body: JSON.stringify({
+          project: newProject
+        })
+      }).then((response) => response.json()).then((data) => {
+        setProjects((prevProjects) => [...prevProjects, data]);
+        setNewProject({ name: "", description: "" });
+        setIsSubmitting(false);
+      }).catch((error2) => {
+        console.error("Error creating project:", error2);
+        setError("Failed to create project.");
+        setIsSubmitting(false);
+      });
+    };
     if (error) {
       return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [
         "Error: ",
@@ -26461,6 +26486,36 @@
     }
     return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [
       /* @__PURE__ */ (0, import_jsx_runtime.jsx)("h2", { children: "Projects" }),
+      /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("form", { onSubmit: handleSubmit, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("label", { htmlFor: "name", children: "Project Name:" }),
+          /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
+            "input",
+            {
+              type: "text",
+              id: "name",
+              name: "name",
+              value: newProject.name,
+              onChange: handleInputChange,
+              required: true
+            }
+          )
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("label", { htmlFor: "description", children: "Project Description:" }),
+          /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
+            "textarea",
+            {
+              id: "description",
+              name: "description",
+              value: newProject.description,
+              onChange: handleInputChange,
+              required: true
+            }
+          )
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", { type: "submit", disabled: isSubmitting, children: isSubmitting ? "Creating..." : "Create Project" })
+      ] }),
       projects.length === 0 ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { children: "No projects available" }) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)("ul", { children: projects.map((project) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("li", { children: [
         /* @__PURE__ */ (0, import_jsx_runtime.jsx)("h3", { children: project.name }),
         /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { children: project.description }),
@@ -29066,11 +29121,12 @@
   // app/javascript/src/Components/TaskComments.tsx
   var import_react3 = __toESM(require_react());
   var import_jsx_runtime3 = __toESM(require_jsx_runtime());
-  var TaskComments = ({ taskId }) => {
+  var TaskComments = ({ taskId, projectId }) => {
     const [comments, setComments] = (0, import_react3.useState)([]);
     const [newComment, setNewComment] = (0, import_react3.useState)("");
     const [loading, setLoading] = (0, import_react3.useState)(true);
     (0, import_react3.useEffect)(() => {
+      setLoading(true);
       axios_default.get(`/api/v1/tasks/${taskId}/comments`).then((response) => {
         setComments(Array.isArray(response.data) ? response.data : []);
         setLoading(false);
@@ -29083,7 +29139,7 @@
     const handleSubmit = (e) => {
       e.preventDefault();
       if (newComment.trim()) {
-        axios_default.post(`/api/v1/tasks/${taskId}/comments`, { comment: { text: newComment } }).then((response) => {
+        axios_default.post(`/api/v1/projects/${projectId}/tasks/${taskId}/comments`, { comment: { content: newComment } }).then((response) => {
           const newCommentData = response.data;
           setComments((prevComments) => [...prevComments, newCommentData]);
           setNewComment("");
@@ -29095,7 +29151,12 @@
     if (loading) return /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("div", { children: "Loading comments..." });
     return /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { children: [
       /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("h4", { children: "Comments" }),
-      comments.length === 0 ? /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("p", { children: "No comments available." }) : /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("ul", { children: comments.map((comment) => /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("li", { children: comment.text }, comment.id)) }),
+      comments.length === 0 ? /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("p", { children: "No comments available." }) : /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("ul", { children: comments.map((comment) => /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("strong", { children: comment.user_name }),
+        " - ",
+        comment.created_at,
+        /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("p", { children: comment.content })
+      ] }, comment.id)) }),
       /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("form", { onSubmit: handleSubmit, children: [
         /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(
           "textarea",
@@ -29171,7 +29232,8 @@
             onChange: (e) => updateTask(project.id, task.id, e.target.checked)
           }
         ),
-        /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(TaskComments_default, { taskId: task.id })
+        /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(TaskComments_default, { taskId: task.id, projectId: project.id }),
+        " "
       ] }, task.id)) : /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("p", { children: "No tasks available." }),
       /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(
         TaskCreate_default,

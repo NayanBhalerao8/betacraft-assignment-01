@@ -1,3 +1,4 @@
+// ShowProject.tsx
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
@@ -40,30 +41,29 @@ const ShowProject = () => {
   // Update task completion status
   const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
 
-const updateTask = (projectId: number, taskId: number, completed: boolean) => {
-  axios
-    .put(
-      `/api/v1/projects/${projectId}/tasks/${taskId}`,
-      { task: { completed } },
-      { headers: { 'X-CSRF-Token': csrfToken || '' } }
-    )
-    .then((response) => {
-      const updatedTask = response.data as Task;
-      setProject((prevProject) => {
-        if (prevProject) {
-          const updatedTasks = prevProject.tasks.map((task) =>
-            task.id === updatedTask.id ? updatedTask : task
-          );
-          return { ...prevProject, tasks: updatedTasks };
-        }
-        return prevProject;
+  const updateTask = (projectId: number, taskId: number, completed: boolean) => {
+    axios
+      .put(
+        `/api/v1/projects/${projectId}/tasks/${taskId}`,
+        { task: { completed } },
+        { headers: { 'X-CSRF-Token': csrfToken || '' } }
+      )
+      .then((response) => {
+        const updatedTask = response.data as Task;
+        setProject((prevProject) => {
+          if (prevProject) {
+            const updatedTasks = prevProject.tasks.map((task) =>
+              task.id === updatedTask.id ? updatedTask : task
+            );
+            return { ...prevProject, tasks: updatedTasks };
+          }
+          return prevProject;
+        });
+      })
+      .catch((error) => {
+        console.error('Error updating task:', error);
       });
-    })
-    .catch((error) => {
-      console.error('Error updating task:', error);
-    });
-};
-  
+  };
 
   if (loading) return <div>Loading...</div>;
   if (!project) return <div>Project not found</div>;
@@ -86,7 +86,7 @@ const updateTask = (projectId: number, taskId: number, completed: boolean) => {
             />
 
             {/* Add Task Comments Section */}
-            <TaskComments taskId={task.id} />
+            <TaskComments taskId={task.id} projectId={project.id} /> {/* Ensure projectId is passed correctly */}
           </div>
         ))
       ) : (

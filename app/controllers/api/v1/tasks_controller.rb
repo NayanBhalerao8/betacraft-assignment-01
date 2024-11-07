@@ -1,12 +1,11 @@
 module Api
   module V1
     class TasksController < ApplicationController
-      
-      before_action :set_current_user, only: [:create]
+      before_action :authenticate_user!  # Ensures user is authenticated
 
       def create
         @project = Project.find(params[:project_id])
-        @task = @project.tasks.new(task_params.merge(user_id: current_user.id))  # Automatically set user_id
+        @task = @project.tasks.new(task_params.merge(user_id: current_user.id))  # Automatically set user_id from current_user
     
         if @task.save
           render json: @task, status: :created
@@ -15,10 +14,9 @@ module Api
         end
       end
       
-
       def update
-        @project = Project.find_by(id: params[:project_id]) # Find project by ID
-        @task = @project.tasks.find_by(id: params[:id])      # Find task by ID within the project
+        @project = Project.find_by(id: params[:project_id])  # Find project by ID
+        @task = @project.tasks.find_by(id: params[:id])       # Find task by ID within the project
     
         if @task.nil?
           render json: { error: 'Task not found' }, status: :not_found
@@ -34,16 +32,11 @@ module Api
 
       private
 
-      def set_current_user
-        @current_user = current_user # For now, you can set a placeholder user
-      end
-
-      def current_user
-        @current_user
-      end
-
+      # Since authenticate_user! already ensures the user is authenticated,
+      # no need for an explicit set_current_user method.
+      
       def task_params
-        params.require(:task).permit(:completed, :title, :description) # adjust fields as necessary
+        params.require(:task).permit(:completed, :title, :description)  # Adjust fields as necessary
       end
     end
   end
