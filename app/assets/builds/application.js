@@ -29144,8 +29144,13 @@
         setLoading(false);
       });
     }, [id]);
-    const updateTask = (taskId, completed) => {
-      axios_default.put(`/api/v1/tasks/${taskId}`, { task: { completed } }).then((response) => {
+    const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute("content");
+    const updateTask = (projectId, taskId, completed) => {
+      axios_default.put(
+        `/api/v1/projects/${projectId}/tasks/${taskId}`,
+        { task: { completed } },
+        { headers: { "X-CSRF-Token": csrfToken || "" } }
+      ).then((response) => {
         const updatedTask = response.data;
         setProject((prevProject) => {
           if (prevProject) {
@@ -29177,7 +29182,7 @@
           {
             type: "checkbox",
             checked: task.completed,
-            onChange: (e) => updateTask(task.id, e.target.checked)
+            onChange: (e) => updateTask(project.id, task.id, e.target.checked)
           }
         ),
         /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(TaskComments_default, { taskId: task.id })
