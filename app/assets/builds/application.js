@@ -1089,7 +1089,7 @@
             }
             return dispatcher.useContext(Context);
           }
-          function useState7(initialState) {
+          function useState9(initialState) {
             var dispatcher = resolveDispatcher();
             return dispatcher.useState(initialState);
           }
@@ -1101,7 +1101,7 @@
             var dispatcher = resolveDispatcher();
             return dispatcher.useRef(initialValue);
           }
-          function useEffect6(create, deps) {
+          function useEffect7(create, deps) {
             var dispatcher = resolveDispatcher();
             return dispatcher.useEffect(create, deps);
           }
@@ -1884,7 +1884,7 @@
           exports.useContext = useContext3;
           exports.useDebugValue = useDebugValue;
           exports.useDeferredValue = useDeferredValue;
-          exports.useEffect = useEffect6;
+          exports.useEffect = useEffect7;
           exports.useId = useId;
           exports.useImperativeHandle = useImperativeHandle;
           exports.useInsertionEffect = useInsertionEffect;
@@ -1892,7 +1892,7 @@
           exports.useMemo = useMemo3;
           exports.useReducer = useReducer;
           exports.useRef = useRef3;
-          exports.useState = useState7;
+          exports.useState = useState9;
           exports.useSyncExternalStore = useSyncExternalStore;
           exports.useTransition = useTransition;
           exports.version = ReactVersion;
@@ -2388,9 +2388,9 @@
           if (typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ !== "undefined" && typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart === "function") {
             __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart(new Error());
           }
-          var React8 = require_react();
+          var React10 = require_react();
           var Scheduler = require_scheduler();
-          var ReactSharedInternals = React8.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED;
+          var ReactSharedInternals = React10.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED;
           var suppressWarning = false;
           function setSuppressWarning(newSuppressWarning) {
             {
@@ -3997,7 +3997,7 @@
             {
               if (props.value == null) {
                 if (typeof props.children === "object" && props.children !== null) {
-                  React8.Children.forEach(props.children, function(child) {
+                  React10.Children.forEach(props.children, function(child) {
                     if (child == null) {
                       return;
                     }
@@ -23593,7 +23593,7 @@
       if (true) {
         (function() {
           "use strict";
-          var React8 = require_react();
+          var React10 = require_react();
           var REACT_ELEMENT_TYPE = Symbol.for("react.element");
           var REACT_PORTAL_TYPE = Symbol.for("react.portal");
           var REACT_FRAGMENT_TYPE = Symbol.for("react.fragment");
@@ -23619,7 +23619,7 @@
             }
             return null;
           }
-          var ReactSharedInternals = React8.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED;
+          var ReactSharedInternals = React10.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED;
           function error(format) {
             {
               {
@@ -24469,11 +24469,11 @@
               return jsxWithValidation(type, props, key, false);
             }
           }
-          var jsx7 = jsxWithValidationDynamic;
-          var jsxs6 = jsxWithValidationStatic;
+          var jsx9 = jsxWithValidationDynamic;
+          var jsxs8 = jsxWithValidationStatic;
           exports.Fragment = REACT_FRAGMENT_TYPE;
-          exports.jsx = jsx7;
-          exports.jsxs = jsxs6;
+          exports.jsx = jsx9;
+          exports.jsxs = jsxs8;
         })();
       }
     }
@@ -24492,7 +24492,7 @@
   });
 
   // app/javascript/src/index.tsx
-  var import_react5 = __toESM(require_react());
+  var import_react7 = __toESM(require_react());
   var import_client = __toESM(require_client());
 
   // node_modules/react-router-dom/dist/index.js
@@ -29253,22 +29253,113 @@
   };
   var ShowProject_default = ShowProject;
 
-  // app/javascript/src/App.tsx
+  // app/javascript/src/Components/InviteUserForm.tsx
+  var import_react5 = __toESM(require_react());
   var import_jsx_runtime5 = __toESM(require_jsx_runtime());
+  var InviteUserForm = () => {
+    const { id } = useParams();
+    const projectId = parseInt(id, 10);
+    const [email, setEmail] = (0, import_react5.useState)("");
+    const [status, setStatus] = (0, import_react5.useState)(null);
+    const handleInviteSubmit = (e) => {
+      e.preventDefault();
+      if (email.trim()) {
+        axios_default.post(`/api/v1/projects/${projectId}/invites`, { invite: { invitee_email: email } }).then((response) => {
+          setStatus("Invitation sent successfully");
+          setEmail("");
+        }).catch((error) => {
+          setStatus("Error sending invitation");
+          console.error(error);
+        });
+      }
+    };
+    return /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("div", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("h4", { children: "Invite User to Project" }),
+      /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("form", { onSubmit: handleInviteSubmit, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(
+          "input",
+          {
+            type: "email",
+            placeholder: "Enter email address",
+            value: email,
+            onChange: (e) => setEmail(e.target.value),
+            required: true
+          }
+        ),
+        /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("button", { type: "submit", children: "Invite" })
+      ] }),
+      status && /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("p", { children: status })
+    ] });
+  };
+  var InviteUserForm_default = InviteUserForm;
+
+  // app/javascript/src/Components/InviteResponse.tsx
+  var import_react6 = __toESM(require_react());
+  var import_jsx_runtime6 = __toESM(require_jsx_runtime());
+  var InviteResponse = () => {
+    const [invites, setInvites] = (0, import_react6.useState)([]);
+    const [loading, setLoading] = (0, import_react6.useState)(true);
+    (0, import_react6.useEffect)(() => {
+      axios_default.get("/api/v1/check_invites").then((response) => {
+        setInvites(response.data);
+        setLoading(false);
+      }).catch((error) => {
+        console.error("Error fetching invites", error);
+        setLoading(false);
+      });
+    }, []);
+    const handleAccept = (id) => {
+      const projectId = 4;
+      axios_default.post(`/api/v1/projects/${projectId}/invites/${id}/accept`).then((response) => {
+        console.log("Invite accepted:", response.data);
+        setInvites(invites.filter((invite) => invite.id !== id));
+      }).catch((error) => {
+        console.error("Error accepting invite", error);
+      });
+    };
+    const handleReject = (id) => {
+      axios_default.post(`/api/v1/projects/4/invites/${id}/reject`).then((response) => {
+        console.log("Invite rejected:", response.data);
+        setInvites(invites.filter((invite) => invite.id !== id));
+      }).catch((error) => {
+        console.error("Error rejecting invite", error);
+      });
+    };
+    if (loading) return /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("div", { children: "Loading invites..." });
+    return /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("div", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("h3", { children: "Your Invitations" }),
+      invites.length === 0 ? /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("p", { children: "No invitations found." }) : /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("ul", { children: invites.map((invite) => /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("li", { children: [
+        "You are invited to the project: ",
+        invite.project_name,
+        " BY ",
+        invite.user_email,
+        invite.status === "pending" && /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("div", { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("button", { onClick: () => handleAccept(invite.id), children: "Accept" }),
+          /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("button", { onClick: () => handleReject(invite.id), children: "Reject" })
+        ] })
+      ] }, invite.id)) })
+    ] });
+  };
+  var InviteResponse_default = InviteResponse;
+
+  // app/javascript/src/App.tsx
+  var import_jsx_runtime7 = __toESM(require_jsx_runtime());
   var App = () => {
-    return /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(BrowserRouter, { children: /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)(Routes, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(Route, { path: "/projects", element: /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(Projects_default, {}) }),
+    return /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(BrowserRouter, { children: /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)(Routes, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(Route, { path: "/projects", element: /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(Projects_default, {}) }),
       " ",
-      /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(Route, { path: "/projects/:id", element: /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(ShowProject_default, {}) })
+      /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(Route, { path: "/projects/:id", element: /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(ShowProject_default, {}) }),
+      /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(Route, { path: "/projects/:id/invite_others", element: /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(InviteUserForm_default, {}) }),
+      /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(Route, { path: "/check_invites", element: /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(InviteResponse_default, {}) })
     ] }) });
   };
   var App_default = App;
 
   // app/javascript/src/index.tsx
-  var import_jsx_runtime6 = __toESM(require_jsx_runtime());
+  var import_jsx_runtime8 = __toESM(require_jsx_runtime());
   var root = import_client.default.createRoot(document.getElementById("root"));
   root.render(
-    /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_react5.default.StrictMode, { children: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_react5.Suspense, { fallback: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("div", { children: "Loading..." }), children: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(App_default, {}) }) })
+    /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_react7.default.StrictMode, { children: /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_react7.Suspense, { fallback: /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("div", { children: "Loading..." }), children: /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(App_default, {}) }) })
   );
 })();
 /*! Bundled license information:

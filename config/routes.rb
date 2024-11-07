@@ -27,6 +27,28 @@ Rails.application.routes.draw do
   end
   
   
+  namespace :api do
+    namespace :v1 do
+      resources :projects do
+        resources :invites, only: [:create] do
+          member do
+            post :accept
+            post :reject
+          end
+        end
+      end
+    end
+  end
+
+  namespace :api do
+    namespace :v1 do
+      # Route for checking invites doesn't require a project ID
+      get 'check_invites', to: 'invites#check_invites'
+    end
+  end
+  
+  
+  
   # Keep this route at the bottom
   get '*path', to: 'home#index', via: :all
 end
