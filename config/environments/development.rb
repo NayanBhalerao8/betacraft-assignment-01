@@ -11,7 +11,10 @@ Rails.application.configure do
   end
 
   # Settings specified here will take precedence over those in config/application.rb.
+  # Dig for credentials
+  ENV['GOOGLE_OAUTH_CLIENT_ID'] = Rails.application.credentials.dig(:google_oauth_client_id)
 
+  ENV['GOOGLE_OAUTH_CLIENT_SECRET'] = Rails.application.credentials.dig(:google_oauth_client_secret)
   # In the development environment your application's code is reloaded any time
   # it changes. This slows down response time but is perfect for development
   # since you don't have to restart the web server when you make code changes.

@@ -9,7 +9,7 @@ const App = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Projects />} />
+        
         <Route path="/projects" element={<Projects />} /> {/* This is important */}
         <Route path="/projects/:id" element={<ShowProject />} />
       </Routes>

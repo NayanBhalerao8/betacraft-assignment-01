@@ -29195,7 +29195,6 @@
   var import_jsx_runtime5 = __toESM(require_jsx_runtime());
   var App = () => {
     return /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(BrowserRouter, { children: /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)(Routes, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(Route, { path: "/", element: /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(Projects_default, {}) }),
       /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(Route, { path: "/projects", element: /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(Projects_default, {}) }),
       " ",
       /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(Route, { path: "/projects/:id", element: /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(ShowProject_default, {}) })

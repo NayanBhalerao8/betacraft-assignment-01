@@ -7,6 +7,14 @@ Rails.application.routes.draw do
   
   get "up" => "rails/health#show", as: :rails_health_check
 
+  # config/routes.rb
+  # devise_for :users, controllers: { omniauth_callbacks: 'users/omniauth_callbacks' }
+  devise_for :users, controllers: {
+    omniauth_callbacks: 'users/omniauth_callbacks',
+    sessions: 'users/sessions',
+    registrations: 'users/registrations'
+  }
+
   # API Routes
   namespace :api do
     namespace :v1 do
