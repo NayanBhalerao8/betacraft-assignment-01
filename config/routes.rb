@@ -18,6 +18,7 @@ Rails.application.routes.draw do
     end
   end
   
+  
   # Keep this route at the bottom
   get '*path', to: 'home#index', via: :all
 end
