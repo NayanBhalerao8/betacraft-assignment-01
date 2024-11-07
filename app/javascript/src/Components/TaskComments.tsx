@@ -55,7 +55,7 @@ const TaskComments: React.FC<TaskCommentsProps> = ({ taskId, projectId }) => {
 
   return (
     <div>
-      <h4>Comments</h4>
+      <h2>Comments</h2>
       {comments.length === 0 ? (
         <p>No comments available.</p>
       ) : (

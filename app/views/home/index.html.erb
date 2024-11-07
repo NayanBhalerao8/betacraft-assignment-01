@@ -1,12 +1,19 @@
-<div id="root"></div>  <!-- This is where your React component will be rendered -->
-
-<%# ERB code continues below this point %>
+<div id="root" style="padding: 20px; background-color: #f7f7f7; border-radius: 8px;"></div>
+<center>
 <% if current_user %>
-  <h2><%= current_user.email %></h2>
-  <%#= image_tag(current_user.avatar_url) %>
-  <%= link_to "Edit Account", edit_user_registration_path %>
-  <%= button_to "Logout", destroy_user_session_path, data: {turbo: "false"}, method: :delete %>
+  <div style="margin-top: 20px;">
+    <h2 style="font-size: 1.5rem; color: #333;">Hey, <%= current_user.email %></h2>
+    <%= link_to "View Projects", "/projects", style: "padding: 8px 16px; text-decoration: none; background-color: #4CAF50; color: white; border-radius: 4px;" %><br><br>  
+    <%#= image_tag(current_user.avatar_url) %>
+    <div style="margin-top: 10px;">
+      <%= link_to "Edit Account", edit_user_registration_path, style: "padding: 8px 16px; text-decoration: none; background-color: #ff9800; color: white; border-radius: 4px;" %><br><br>
+      <%= button_to "Logout", destroy_user_session_path, data: {turbo: "false"}, method: :delete, style: "padding: 8px 16px; margin-left: 10px; background-color: #f44336; color: white; border-radius: 4px;" %>
+    </div>
+  </div>
 <% else %>
-  <%= link_to "Login", new_user_session_path %>
-  <%= link_to "Create Account", new_user_registration_path %>
+  <div style="margin-top: 20px;">
+    <%= link_to "Login", new_user_session_path, style: "padding: 8px 16px; text-decoration: none; background-color: #4CAF50; color: white; border-radius: 4px;" %>
+    <%= link_to "Create Account", new_user_registration_path, style: "padding: 8px 16px; margin-left: 10px; text-decoration: none; background-color: #2196F3; color: white; border-radius: 4px;" %>
+  </div>
 <% end %>
+</center>

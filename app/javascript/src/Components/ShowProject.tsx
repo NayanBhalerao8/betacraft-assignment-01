@@ -70,8 +70,8 @@ const ShowProject = () => {
 
   return (
     <div>
-      <h1>{project.name}</h1>
-      <p>{project.description}</p>
+      <h1>Project - {project.name}</h1>
+      <p>Description - {project.description}</p>
 
       <h2>Tasks</h2>
       {project.tasks && project.tasks.length > 0 ? (
@@ -79,7 +79,7 @@ const ShowProject = () => {
           <div key={task.id}>
             <h3>{task.title}</h3>
             <p>Completed: {task.completed ? "Yes" : "No"}</p>
-            <input
+             Mark as Completed: <input
               type="checkbox"
               checked={task.completed}
               onChange={(e) => updateTask(project.id, task.id, e.target.checked)}
