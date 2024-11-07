@@ -28,7 +28,7 @@ gem 'redis', '~> 5.2'
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.18.3', require: false
 
-gem 'devise', '~> 4.9', '>= 4.9.4'
+gem 'dotenv-rails', '~> 3.1', '>= 3.1.4'
 gem 'rack-cors'
 
 # gem 'sentry-raven', '~> 3.1'
@@ -62,7 +62,6 @@ group :development do
   gem 'spring', '~> 4.2', '>= 4.2.1'
   gem 'spring-watcher-listen', '~> 2.1'
 
-  gem 'dotenv-rails', '~> 3.1', '>= 3.1.4'
   gem 'annotate', '~> 3.2'
 end
 
@@ -77,3 +76,9 @@ end
 gem 'tzinfo-data', '~> 1.2024', '>= 1.2024.2', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem "sass-rails", "~> 6.0"
+
+
+gem 'devise'
+gem 'omniauth'
+gem 'omniauth-google-oauth2'
+gem "omniauth-rails_csrf_protection", "~> 1.0"

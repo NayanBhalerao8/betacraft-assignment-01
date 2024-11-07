@@ -1,3 +1,4 @@
+// ShowProject.tsx
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
@@ -38,8 +39,15 @@ const ShowProject = () => {
   }, [id]);
 
   // Update task completion status
-  const updateTask = (taskId: number, completed: boolean) => {
-    axios.put(`/api/v1/tasks/${taskId}`, { task: { completed } })
+  const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+
+  const updateTask = (projectId: number, taskId: number, completed: boolean) => {
+    axios
+      .put(
+        `/api/v1/projects/${projectId}/tasks/${taskId}`,
+        { task: { completed } },
+        { headers: { 'X-CSRF-Token': csrfToken || '' } }
+      )
       .then((response) => {
         const updatedTask = response.data as Task;
         setProject((prevProject) => {
@@ -53,7 +61,7 @@ const ShowProject = () => {
         });
       })
       .catch((error) => {
-        console.error("Error updating task:", error);
+        console.error('Error updating task:', error);
       });
   };
 
@@ -74,10 +82,11 @@ const ShowProject = () => {
             <input
               type="checkbox"
               checked={task.completed}
-              onChange={(e) => updateTask(task.id, e.target.checked)}
+              onChange={(e) => updateTask(project.id, task.id, e.target.checked)}
             />
+
             {/* Add Task Comments Section */}
-            <TaskComments taskId={task.id} />
+            <TaskComments taskId={task.id} projectId={project.id} /> {/* Ensure projectId is passed correctly */}
           </div>
         ))
       ) : (

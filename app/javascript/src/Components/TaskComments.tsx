@@ -3,24 +3,29 @@ import axios from 'axios';
 
 interface Comment {
   id: number;
-  text: string;
+  content: string;
+  user_name: string;
+  created_at: string;
+  updated_at: string;
 }
 
 interface TaskCommentsProps {
   taskId: number;
+  projectId: number;
 }
 
-const TaskComments: React.FC<TaskCommentsProps> = ({ taskId }) => {
+const TaskComments: React.FC<TaskCommentsProps> = ({ taskId, projectId }) => {
   const [comments, setComments] = useState<Comment[]>([]);
   const [newComment, setNewComment] = useState('');
   const [loading, setLoading] = useState(true);
 
   // Fetch comments for the specific task
   useEffect(() => {
+    setLoading(true); // Set loading to true when fetching comments
     axios.get(`/api/v1/tasks/${taskId}/comments`)
       .then((response) => {
         setComments(Array.isArray(response.data) ? response.data : []);
-        setLoading(false);
+        setLoading(false); // Set loading to false once data is fetched
       })
       .catch((error) => {
         console.error('Error fetching comments:', error);
@@ -34,12 +39,11 @@ const TaskComments: React.FC<TaskCommentsProps> = ({ taskId }) => {
     e.preventDefault();
 
     if (newComment.trim()) {
-      axios.post(`/api/v1/tasks/${taskId}/comments`, { comment: { text: newComment } })
+      axios.post(`/api/v1/projects/${projectId}/tasks/${taskId}/comments`, { comment: { content: newComment } })
         .then((response) => {
-          // Ensure the new comment is typed as Comment
           const newCommentData = response.data as Comment;
-          setComments((prevComments) => [...prevComments, newCommentData]); // Update state with correct type
-          setNewComment(''); // Reset the input field
+          setComments((prevComments) => [...prevComments, newCommentData]); // Add the new comment to the list
+          setNewComment(''); // Reset input field after submission
         })
         .catch((error) => {
           console.error('Error adding comment:', error);
@@ -57,7 +61,10 @@ const TaskComments: React.FC<TaskCommentsProps> = ({ taskId }) => {
       ) : (
         <ul>
           {comments.map((comment) => (
-            <li key={comment.id}>{comment.text}</li>
+            <li key={comment.id}>
+              <strong>{comment.user_name}</strong> - {comment.created_at}
+              <p>{comment.content}</p>
+            </li>
           ))}
         </ul>
       )}

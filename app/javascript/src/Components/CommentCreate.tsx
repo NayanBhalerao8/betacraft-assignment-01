@@ -10,11 +10,12 @@ interface Comment {
 }
 
 interface CommentCreateProps {
+  projectId: number; // Add projectId to props
   taskId: number;
   onCommentCreated: (newComment: Comment) => void;
 }
 
-const CommentCreate: React.FC<CommentCreateProps> = ({ taskId, onCommentCreated }) => {
+const CommentCreate: React.FC<CommentCreateProps> = ({ projectId, taskId, onCommentCreated }) => {
   const [content, setContent] = useState<string>('');
 
   const handleSubmit = (e: FormEvent) => {
@@ -31,9 +32,10 @@ const CommentCreate: React.FC<CommentCreateProps> = ({ taskId, onCommentCreated 
   
     const commentData = { content };
   
+    // Update the URL to include both projectId and taskId
     axios
       .post(
-        `/api/v1/tasks/${taskId}/comments`,
+        `/api/v1/projects/${projectId}/tasks/${taskId}/comments`, // Updated URL
         { comment: commentData },
         {
           headers: {

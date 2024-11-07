@@ -26435,24 +26435,49 @@
   var Projects = () => {
     const [projects, setProjects] = (0, import_react.useState)([]);
     const [error, setError] = (0, import_react.useState)(null);
+    const [newProject, setNewProject] = (0, import_react.useState)({
+      name: "",
+      description: ""
+    });
+    const [isSubmitting, setIsSubmitting] = (0, import_react.useState)(false);
     (0, import_react.useEffect)(() => {
       fetch("/api/v1/projects").then((response) => {
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
-        return response.text();
-      }).then((text) => {
-        try {
-          const data = JSON.parse(text);
-          setProjects(data);
-        } catch (e) {
-          setError("Failed to parse JSON response.");
-        }
-      }).catch((error2) => {
+        return response.json();
+      }).then((data) => setProjects(data)).catch((error2) => {
         console.error("Error fetching projects:", error2);
         setError("Failed to fetch projects.");
       });
     }, []);
+    const handleInputChange = (e) => {
+      const { name, value } = e.target;
+      setNewProject({ ...newProject, [name]: value });
+    };
+    const handleSubmit = (e) => {
+      e.preventDefault();
+      setIsSubmitting(true);
+      fetch("/api/v1/projects", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          // Add the token if needed for authentication
+          "Authorization": `Bearer ${localStorage.getItem("jwt_token")}`
+        },
+        body: JSON.stringify({
+          project: newProject
+        })
+      }).then((response) => response.json()).then((data) => {
+        setProjects((prevProjects) => [...prevProjects, data]);
+        setNewProject({ name: "", description: "" });
+        setIsSubmitting(false);
+      }).catch((error2) => {
+        console.error("Error creating project:", error2);
+        setError("Failed to create project.");
+        setIsSubmitting(false);
+      });
+    };
     if (error) {
       return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [
         "Error: ",
@@ -26461,6 +26486,36 @@
     }
     return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [
       /* @__PURE__ */ (0, import_jsx_runtime.jsx)("h2", { children: "Projects" }),
+      /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("form", { onSubmit: handleSubmit, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("label", { htmlFor: "name", children: "Project Name:" }),
+          /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
+            "input",
+            {
+              type: "text",
+              id: "name",
+              name: "name",
+              value: newProject.name,
+              onChange: handleInputChange,
+              required: true
+            }
+          )
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("label", { htmlFor: "description", children: "Project Description:" }),
+          /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
+            "textarea",
+            {
+              id: "description",
+              name: "description",
+              value: newProject.description,
+              onChange: handleInputChange,
+              required: true
+            }
+          )
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", { type: "submit", disabled: isSubmitting, children: isSubmitting ? "Creating..." : "Create Project" })
+      ] }),
       projects.length === 0 ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { children: "No projects available" }) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)("ul", { children: projects.map((project) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("li", { children: [
         /* @__PURE__ */ (0, import_jsx_runtime.jsx)("h3", { children: project.name }),
         /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { children: project.description }),
@@ -28997,8 +29052,6 @@
     const [title, setTitle] = (0, import_react2.useState)("");
     const [description, setDescription] = (0, import_react2.useState)("");
     const [completed, setCompleted] = (0, import_react2.useState)(false);
-    const [commentContent, setCommentContent] = (0, import_react2.useState)("");
-    const [userId, setUserId] = (0, import_react2.useState)(1);
     const handleSubmit = (e) => {
       e.preventDefault();
       const csrfTokenMeta = document.querySelector('meta[name="csrf-token"]');
@@ -29008,20 +29061,20 @@
       } else {
         console.error("CSRF token meta tag not found!");
       }
-      const commentData = {
-        content: commentContent,
-        // The comment text
-        user_id: userId
-        // The user ID (ensure it's valid)
+      const taskData = {
+        title,
+        description,
+        completed
       };
-      axios_default.post(`/api/v1/projects/${projectId}/tasks/${taskId}/comments`, { comment: commentData }, {
+      axios_default.post(`/api/v1/projects/${projectId}/tasks`, taskData, {
         headers: {
           "X-CSRF-Token": csrfToken
         }
       }).then((response) => {
-        console.log("Comment created:", response.data);
+        console.log("Task created:", response.data);
+        onTaskCreated(response.data);
       }).catch((error) => {
-        console.error("Error creating comment:", error);
+        console.error("Error creating task:", error);
       });
     };
     return /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("form", { onSubmit: handleSubmit, children: [
@@ -29060,19 +29113,7 @@
           }
         )
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("label", { children: [
-        "Comment:",
-        /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(
-          "input",
-          {
-            type: "text",
-            value: commentContent,
-            onChange: (e) => setCommentContent(e.target.value),
-            required: true
-          }
-        )
-      ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("button", { type: "submit", children: "Create Task and Comment" })
+      /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("button", { type: "submit", children: "Create Task" })
     ] });
   };
   var TaskCreate_default = TaskCreate;
@@ -29080,11 +29121,12 @@
   // app/javascript/src/Components/TaskComments.tsx
   var import_react3 = __toESM(require_react());
   var import_jsx_runtime3 = __toESM(require_jsx_runtime());
-  var TaskComments = ({ taskId }) => {
+  var TaskComments = ({ taskId, projectId }) => {
     const [comments, setComments] = (0, import_react3.useState)([]);
     const [newComment, setNewComment] = (0, import_react3.useState)("");
     const [loading, setLoading] = (0, import_react3.useState)(true);
     (0, import_react3.useEffect)(() => {
+      setLoading(true);
       axios_default.get(`/api/v1/tasks/${taskId}/comments`).then((response) => {
         setComments(Array.isArray(response.data) ? response.data : []);
         setLoading(false);
@@ -29097,7 +29139,7 @@
     const handleSubmit = (e) => {
       e.preventDefault();
       if (newComment.trim()) {
-        axios_default.post(`/api/v1/tasks/${taskId}/comments`, { comment: { text: newComment } }).then((response) => {
+        axios_default.post(`/api/v1/projects/${projectId}/tasks/${taskId}/comments`, { comment: { content: newComment } }).then((response) => {
           const newCommentData = response.data;
           setComments((prevComments) => [...prevComments, newCommentData]);
           setNewComment("");
@@ -29109,7 +29151,12 @@
     if (loading) return /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("div", { children: "Loading comments..." });
     return /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { children: [
       /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("h4", { children: "Comments" }),
-      comments.length === 0 ? /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("p", { children: "No comments available." }) : /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("ul", { children: comments.map((comment) => /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("li", { children: comment.text }, comment.id)) }),
+      comments.length === 0 ? /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("p", { children: "No comments available." }) : /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("ul", { children: comments.map((comment) => /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("strong", { children: comment.user_name }),
+        " - ",
+        comment.created_at,
+        /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("p", { children: comment.content })
+      ] }, comment.id)) }),
       /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("form", { onSubmit: handleSubmit, children: [
         /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(
           "textarea",
@@ -29144,8 +29191,13 @@
         setLoading(false);
       });
     }, [id]);
-    const updateTask = (taskId, completed) => {
-      axios_default.put(`/api/v1/tasks/${taskId}`, { task: { completed } }).then((response) => {
+    const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute("content");
+    const updateTask = (projectId, taskId, completed) => {
+      axios_default.put(
+        `/api/v1/projects/${projectId}/tasks/${taskId}`,
+        { task: { completed } },
+        { headers: { "X-CSRF-Token": csrfToken || "" } }
+      ).then((response) => {
         const updatedTask = response.data;
         setProject((prevProject) => {
           if (prevProject) {
@@ -29177,10 +29229,11 @@
           {
             type: "checkbox",
             checked: task.completed,
-            onChange: (e) => updateTask(task.id, e.target.checked)
+            onChange: (e) => updateTask(project.id, task.id, e.target.checked)
           }
         ),
-        /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(TaskComments_default, { taskId: task.id })
+        /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(TaskComments_default, { taskId: task.id, projectId: project.id }),
+        " "
       ] }, task.id)) : /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("p", { children: "No tasks available." }),
       /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(
         TaskCreate_default,
@@ -29204,7 +29257,6 @@
   var import_jsx_runtime5 = __toESM(require_jsx_runtime());
   var App = () => {
     return /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(BrowserRouter, { children: /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)(Routes, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(Route, { path: "/", element: /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(Projects_default, {}) }),
       /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(Route, { path: "/projects", element: /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(Projects_default, {}) }),
       " ",
       /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(Route, { path: "/projects/:id", element: /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(ShowProject_default, {}) })
