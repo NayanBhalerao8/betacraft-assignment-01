@@ -26434,14 +26434,35 @@
   var import_jsx_runtime = __toESM(require_jsx_runtime());
   var Projects = () => {
     const [projects, setProjects] = (0, import_react.useState)([]);
+    const [error, setError] = (0, import_react.useState)(null);
     (0, import_react.useEffect)(() => {
-      fetch("/api/v1/projects").then((response) => response.json()).then((data) => setProjects(data)).catch((error) => console.error("Error fetching projects:", error));
+      fetch("/api/v1/projects").then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.text();
+      }).then((text) => {
+        try {
+          const data = JSON.parse(text);
+          setProjects(data);
+        } catch (e) {
+          setError("Failed to parse JSON response.");
+        }
+      }).catch((error2) => {
+        console.error("Error fetching projects:", error2);
+        setError("Failed to fetch projects.");
+      });
     }, []);
+    if (error) {
+      return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [
+        "Error: ",
+        error
+      ] });
+    }
     return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [
       /* @__PURE__ */ (0, import_jsx_runtime.jsx)("h2", { children: "Projects" }),
-      /* @__PURE__ */ (0, import_jsx_runtime.jsx)("ul", { children: projects.map((project) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("li", { children: [
+      projects.length === 0 ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { children: "No projects available" }) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)("ul", { children: projects.map((project) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("li", { children: [
         /* @__PURE__ */ (0, import_jsx_runtime.jsx)("h3", { children: project.name }),
-        /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {}),
         /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { children: project.description }),
         /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("small", { children: [
           "Created at: ",
