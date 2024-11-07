@@ -9,18 +9,24 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   # end
 
   def google_oauth2
+    # Get the OmniAuth data from the callback request
+    auth = request.env["omniauth.auth"]
+  
+    # Find or create the user from the OmniAuth data
     user = User.from_omniauth(auth)
-
+  
     if user.present?
+      # Sign the user in and redirect
       sign_out_all_scopes
-      flash[:success] = t 'devise.omniauth_callbacks.success', kind: 'Google'
+      flash[:success] = t('devise.omniauth_callbacks.success', kind: 'Google')
       sign_in_and_redirect user, event: :authentication
     else
-      flash[:alert] =
-        t 'devise.omniauth_callbacks.failure', kind: 'Google', reason: "#{auth.info.email} is not authorized."
-      redirect_to new_user_session_path
+      # If user creation or retrieval fails
+      flash[:alert] = t('devise.omniauth_callbacks.failure', kind: 'Google', reason: "#{auth.info.email} is not authorized.")
+      redirect_to new_user_registration_url
     end
   end
+  
 
   # More info at:
   # https://github.com/heartcombo/devise#omniauth

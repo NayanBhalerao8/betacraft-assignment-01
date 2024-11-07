@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_11_07_104043) do
+ActiveRecord::Schema[7.2].define(version: 2024_11_07_132529) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -55,6 +55,12 @@ ActiveRecord::Schema[7.2].define(version: 2024_11_07_104043) do
     t.string "google_token"
     t.string "google_refresh_token"
     t.datetime "google_expires_at"
+    t.string "provider"
+    t.string "uid"
+    t.string "encrypted_password"
+    t.string "avatar_url"
+    t.string "full_name"
+    t.datetime "remember_created_at"
   end
 
   add_foreign_key "comments", "tasks"

@@ -3,13 +3,19 @@
 # Table name: users
 #
 #  id                   :bigint           not null, primary key
+#  avatar_url           :string
 #  email                :string
+#  encrypted_password   :string
+#  full_name            :string
 #  google_expires_at    :datetime
 #  google_refresh_token :string
 #  google_token         :string
 #  google_uid           :string
 #  name                 :string
 #  profile_picture      :string
+#  provider             :string
+#  remember_created_at  :datetime
+#  uid                  :string
 #  created_at           :datetime         not null
 #  updated_at           :datetime         not null
 #
@@ -23,12 +29,13 @@ class User < ApplicationRecord
 
     def self.from_omniauth(auth)
         where(provider: auth.provider, uid: auth.uid).first_or_create do |user|
-        user.email = auth.info.email
-        user.password = Devise.friendly_token[0, 20]
-        # If you are using confirmable and the provider(s) you use validate emails,
-        # uncomment the line below to skip the confirmation emails.
-        # user.skip_confirmation!
+            user.email = auth.info.email
+            user.provider = auth.provider            # Save the provider if not already set
+            user.uid = auth.uid                      # Save the UID from Google
+            # Set any other necessary fields here from `auth` if needed
+            user.password = Devise.friendly_token[0, 20] if user.new_record?
         end
     end
+          
 end
   
