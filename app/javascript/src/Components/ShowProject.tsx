@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import TaskCreate from './TaskCreate';
 import TaskComments from './TaskComments';
+import { Link } from 'react-router-dom';
 
 interface Task {
   id: number;
@@ -72,6 +73,15 @@ const ShowProject = () => {
     <div>
       <h1>Project - {project.name}</h1>
       <p>Description - {project.description}</p>
+      <div className="border p-4 rounded-lg bg-gray-100">
+        <h3 className="text-lg font-semibold mb-2">Invite Users to This Project</h3>
+        <Link
+          to={`/projects/${id}/invite_others`}
+          className="text-blue-600 hover:text-blue-800 font-medium"
+        >
+          Invite a User
+        </Link>
+      </div>
 
       <h2>Tasks</h2>
       {project.tasks && project.tasks.length > 0 ? (
@@ -79,7 +89,7 @@ const ShowProject = () => {
           <div key={task.id}>
             <h3>{task.title}</h3>
             <p>Completed: {task.completed ? "Yes" : "No"}</p>
-             Mark as Completed: <input
+            Mark as Completed: <input
               type="checkbox"
               checked={task.completed}
               onChange={(e) => updateTask(project.id, task.id, e.target.checked)}
@@ -106,6 +116,7 @@ const ShowProject = () => {
         }}
       />
     </div>
+
   );
 };
 

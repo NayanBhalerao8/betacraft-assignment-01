@@ -29241,6 +29241,17 @@
         "Description - ",
         project.description
       ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)("div", { className: "border p-4 rounded-lg bg-gray-100", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("h3", { className: "text-lg font-semibold mb-2", children: "Invite Users to This Project" }),
+        /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(
+          Link,
+          {
+            to: `/projects/${id}/invite_others`,
+            className: "text-blue-600 hover:text-blue-800 font-medium",
+            children: "Invite a User"
+          }
+        )
+      ] }),
       /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("h2", { children: "Tasks" }),
       project.tasks && project.tasks.length > 0 ? project.tasks.map((task) => /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)("div", { children: [
         /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("h3", { children: task.title }),
