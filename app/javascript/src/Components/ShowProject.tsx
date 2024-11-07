@@ -85,7 +85,7 @@ const ShowProject = () => {
               onChange={(e) => updateTask(project.id, task.id, e.target.checked)}
             />
 
-            {/* Add Task Comments Section */}
+            {/* Adding Task Comments Section */}
             <TaskComments taskId={task.id} projectId={project.id} /> {/* Ensure projectId is passed correctly */}
           </div>
         ))
