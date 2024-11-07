@@ -11,7 +11,7 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       resources :projects do
-        resources :tasks, only: [:create]
+        resources :tasks, only: [:create, :update, :edit, :show]
         resources :comments, only: [:index, :create]
       end
     end

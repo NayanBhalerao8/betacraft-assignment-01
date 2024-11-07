@@ -1,9 +1,7 @@
-def update
-    @task = Task.find(params[:id])
-    if @task.update(task_params)
-      render 'api/v1/tasks/update', status: :ok
-    else
-      render json: { errors: @task.errors.full_messages }, status: :unprocessable_entity
-    end
-end
-  
+# app/views/api/v1/tasks/update.json.jbuilder
+json.id @task.id
+json.title @task.title
+json.description @task.description
+json.completed @task.completed
+json.project_id @task.project_id
+json.user_id @task.user_id

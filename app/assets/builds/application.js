@@ -28985,25 +28985,18 @@
         console.error("CSRF token meta tag not found!");
       }
       const taskData = { title, description, completed };
-      axios_default.post(
-        `/api/v1/projects/${projectId}/tasks`,
-        { task: taskData },
-        {
-          headers: {
-            "X-CSRF-Token": csrfToken
-            // Include CSRF token in the headers
-          }
+      axios_default.post(`/api/v1/projects/${projectId}/tasks`, { task: taskData }, {
+        headers: {
+          "X-CSRF-Token": csrfToken
         }
-      ).then((response) => {
+      }).then((response) => {
         console.log("Task created:", response.data);
-        const newTask = response.data;
-        onTaskCreated(newTask);
+        onTaskCreated(response.data);
         setTitle("");
         setDescription("");
         setCompleted(false);
       }).catch((error) => {
         console.error("Error creating task:", error);
-        console.log("Response data:", error.response?.data);
       });
     };
     return /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("form", { onSubmit: handleSubmit, children: [
@@ -29064,10 +29057,35 @@
         setLoading(false);
       });
     }, [id]);
-    const addTaskToProject = (newTask) => {
-      setProject((prevProject) => {
-        if (!prevProject) return prevProject;
-        return { ...prevProject, tasks: [...prevProject.tasks, newTask] };
+    const updateTask = (taskId, completed) => {
+      const csrfTokenMeta = document.querySelector('meta[name="csrf-token"]');
+      let csrfToken = null;
+      if (csrfTokenMeta) {
+        csrfToken = csrfTokenMeta.getAttribute("content");
+      } else {
+        console.error("CSRF token meta tag not found!");
+      }
+      axios_default.put(
+        `/api/v1/projects/${id}/tasks/${taskId}`,
+        { task: { completed } },
+        {
+          headers: {
+            "X-CSRF-Token": csrfToken
+          }
+        }
+      ).then((response) => {
+        const updatedTask = response.data;
+        setProject((prevProject) => {
+          if (prevProject) {
+            const updatedTasks = prevProject.tasks.map(
+              (task) => task.id === updatedTask.id ? updatedTask : task
+            );
+            return { ...prevProject, tasks: updatedTasks };
+          }
+          return prevProject;
+        });
+      }).catch((error) => {
+        console.error("Error updating task:", error);
       });
     };
     if (loading) return /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("div", { children: "Loading..." });
@@ -29078,12 +29096,37 @@
       /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("h2", { children: "Tasks" }),
       project.tasks.length > 0 ? project.tasks.map((task) => /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { children: [
         /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("h3", { children: task.title }),
+        /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("p", { children: task.description }),
         /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("p", { children: [
           "Completed: ",
           task.completed ? "Yes" : "No"
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("label", { children: [
+          "Completed:",
+          /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(
+            "input",
+            {
+              type: "checkbox",
+              checked: task.completed,
+              onChange: (e) => updateTask(task.id, e.target.checked)
+            }
+          )
         ] })
       ] }, task.id)) : /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("p", { children: "No tasks available." }),
-      /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(TaskCreate_default, { projectId: id || "", onTaskCreated: addTaskToProject })
+      /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(
+        TaskCreate_default,
+        {
+          projectId: id || "",
+          onTaskCreated: (newTask) => {
+            setProject((prevProject) => {
+              if (prevProject) {
+                return { ...prevProject, tasks: [...prevProject.tasks, newTask] };
+              }
+              return prevProject;
+            });
+          }
+        }
+      )
     ] });
   };
   var ShowProject_default = ShowProject;

@@ -17,7 +17,14 @@ module Api
       
 
       def update
-        @task = Task.find(params[:id])
+        @project = Project.find_by(id: params[:project_id]) # Find project by ID
+        @task = @project.tasks.find_by(id: params[:id])      # Find task by ID within the project
+    
+        if @task.nil?
+          render json: { error: 'Task not found' }, status: :not_found
+          return
+        end
+    
         if @task.update(task_params)
           render json: @task, status: :ok
         else
@@ -36,7 +43,7 @@ module Api
       end
 
       def task_params
-        params.require(:task).permit(:title, :description, :completed, :project_id)
+        params.require(:task).permit(:completed, :title, :description) # adjust fields as necessary
       end
     end
   end

@@ -6,6 +6,7 @@ import TaskCreate from './TaskCreate';
 interface Task {
   id: number;
   title: string;
+  description: string;
   completed: boolean;
 }
 
@@ -17,17 +18,16 @@ interface Project {
 }
 
 const ShowProject: React.FC = () => {
-  const { id } = useParams<{ id: string }>(); // specify route param type
+  const { id } = useParams<{ id: string }>();
   const [project, setProject] = useState<Project | null>(null);
   const [loading, setLoading] = useState(true);
 
-  // Fetch project data
+  // Fetch project and tasks
   useEffect(() => {
-    if (!id) return; // Ensure `id` is defined before making the request
-
+    if (!id) return;
     axios.get(`/api/v1/projects/${id}`)
       .then((response) => {
-        const projectData = response.data as Project; // Cast response data to Project type
+        const projectData = response.data as Project;
         setProject(projectData);
         setLoading(false);
       })
@@ -37,11 +37,39 @@ const ShowProject: React.FC = () => {
       });
   }, [id]);
 
-  // Callback function to update tasks
-  const addTaskToProject = (newTask: Task) => {
-    setProject((prevProject) => {
-      if (!prevProject) return prevProject;
-      return { ...prevProject, tasks: [...prevProject.tasks, newTask] };
+  // Update task completion status
+  const updateTask = (taskId: number, completed: boolean) => {
+    const csrfTokenMeta = document.querySelector('meta[name="csrf-token"]');
+    let csrfToken: string | null = null;
+
+    if (csrfTokenMeta) {
+      csrfToken = csrfTokenMeta.getAttribute('content');
+    } else {
+      console.error('CSRF token meta tag not found!');
+    }
+
+    axios.put(`/api/v1/projects/${id}/tasks/${taskId}`, 
+      { task: { completed } },
+      {
+        headers: {
+          'X-CSRF-Token': csrfToken,
+        },
+      }
+    )
+    .then((response) => {
+      const updatedTask = response.data as Task;
+      setProject((prevProject) => {
+        if (prevProject) {
+          const updatedTasks = prevProject.tasks.map((task) =>
+            task.id === updatedTask.id ? updatedTask : task
+          );
+          return { ...prevProject, tasks: updatedTasks };
+        }
+        return prevProject;
+      });
+    })
+    .catch((error) => {
+      console.error("Error updating task:", error);
     });
   };
 
@@ -58,15 +86,34 @@ const ShowProject: React.FC = () => {
         project.tasks.map((task) => (
           <div key={task.id}>
             <h3>{task.title}</h3>
-            <p>Completed: {task.completed ? "Yes" : "No"}</p>
+            <p>{task.description}</p>
+            <p>Completed: {task.completed ? 'Yes' : 'No'}</p>
+            <label>
+              Completed:
+              <input
+                type="checkbox"
+                checked={task.completed}
+                onChange={(e) => updateTask(task.id, e.target.checked)}
+              />
+            </label>
           </div>
         ))
       ) : (
         <p>No tasks available.</p>
       )}
 
-      {/* Task creation component with callback to add task */}
-      <TaskCreate projectId={id || ''} onTaskCreated={addTaskToProject} />
+      {/* Pass the onTaskCreated prop to TaskCreate */}
+      <TaskCreate
+        projectId={id || ''}
+        onTaskCreated={(newTask) => {
+          setProject((prevProject) => {
+            if (prevProject) {
+              return { ...prevProject, tasks: [...prevProject.tasks, newTask] };
+            }
+            return prevProject;
+          });
+        }}
+      />
     </div>
   );
 };

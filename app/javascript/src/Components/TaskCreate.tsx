@@ -1,6 +1,11 @@
 import React, { useState, FormEvent } from 'react';
 import axios from 'axios';
 
+interface TaskCreateProps {
+  projectId: string;
+  onTaskCreated: (newTask: Task) => void;
+}
+
 interface Task {
   id: number;
   title: string;
@@ -8,19 +13,14 @@ interface Task {
   completed: boolean;
 }
 
-interface TaskCreateProps {
-  projectId: string;
-  onTaskCreated: (newTask: Task) => void; // Declare the `onTaskCreated` prop here
-}
-
 const TaskCreate: React.FC<TaskCreateProps> = ({ projectId, onTaskCreated }) => {
   const [title, setTitle] = useState<string>('');
-  const [description, setDescription] = useState<string>(''); 
+  const [description, setDescription] = useState<string>('');
   const [completed, setCompleted] = useState<boolean>(false);
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    
+
     const csrfTokenMeta = document.querySelector('meta[name="csrf-token"]');
     let csrfToken: string | null = null;
 
@@ -30,34 +30,25 @@ const TaskCreate: React.FC<TaskCreateProps> = ({ projectId, onTaskCreated }) => 
       console.error('CSRF token meta tag not found!');
     }
 
-    // Prepare task data without 'id'
-    const taskData: Omit<Task, 'id'> = { title, description, completed }; 
+    // Prepare task data
+    const taskData: Omit<Task, 'id'> = { title, description, completed };
 
     // Send POST request
-    axios.post(`/api/v1/projects/${projectId}/tasks`, 
-      { task: taskData },
-      {
-        headers: {
-          'X-CSRF-Token': csrfToken, // Include CSRF token in the headers
-        },
-      }
-    )
+    axios.post(`/api/v1/projects/${projectId}/tasks`, { task: taskData }, {
+      headers: {
+        'X-CSRF-Token': csrfToken,
+      },
+    })
     .then((response) => {
-        console.log("Task created:", response.data);
-      
-        // Type assertion to indicate that response.data is of type Task
-        const newTask = response.data as Task;
-      
-        // Call the parent callback to update the task list
-        onTaskCreated(newTask); 
-      
-        setTitle('');
-        setDescription('');
-        setCompleted(false);
-      })      
+      console.log("Task created:", response.data);
+      // Cast response.data to Task type
+      onTaskCreated(response.data as Task);
+      setTitle('');
+      setDescription('');
+      setCompleted(false);
+    })
     .catch((error) => {
       console.error("Error creating task:", error);
-      console.log("Response data:", error.response?.data);
     });
   };
 
