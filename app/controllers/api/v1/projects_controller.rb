@@ -20,7 +20,8 @@ module Api
           # Render the newly created project as JSON
           render json: @project, status: :created
         else
-          render json: @project.errors, status: :unprocessable_entity
+          # Return errors with 422 status if validation fails
+          render json: { errors: @project.errors.full_messages }, status: :unprocessable_entity
         end
       end
 
