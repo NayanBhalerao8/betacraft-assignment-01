@@ -42,8 +42,6 @@ gem 'strong_migrations', '~> 2.0'
 
 group :development, :test do
   gem 'bullet', '~> 7.2'
-
-  gem 'factory_bot_rails', '~> 6.4', '>= 6.4.3'
   gem 'faker', '~> 3.4', '>= 3.4.2'
 
   gem 'rspec', '~> 3.13'
@@ -66,6 +64,7 @@ group :development do
 end
 
 group :test do
+  gem 'factory_bot_rails', '~> 6.4', '>= 6.4.3'
   # Adds support for Capybara system testing and selenium driver
   gem 'capybara', '~> 3.40'
   # Easy installation and use of web drivers to run system tests with browsers
