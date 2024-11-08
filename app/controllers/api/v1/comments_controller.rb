@@ -2,7 +2,6 @@ module Api
   module V1
     class CommentsController < ApplicationController
       before_action :authenticate_user!
-      before_action :set_project
       before_action :set_task
 
       # Add this to fetch all comments for the task
@@ -23,10 +22,6 @@ module Api
       end
 
       private
-
-      def set_project
-        @project = Project.find(params[:project_id])
-      end
 
       def set_task
         @task = Task.find(params[:task_id])
