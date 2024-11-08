@@ -7,6 +7,7 @@
 #  status        :string           default("pending")
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
+#  inviter_id    :bigint
 #  project_id    :bigint           not null
 #  user_id       :bigint
 #
@@ -34,5 +35,21 @@ class Invite < ApplicationRecord
   # Method to reject the invite
   def reject
     update(status: 'rejected')
+  end
+
+  def self.check_invites_for_user(user)
+    invites = where(invitee_email: user.email)
+    
+    invites_with_project_and_user = invites.map do |invite|
+      project_name = invite.project&.name
+      user_email = invite.inviter&.email # Ensure the inviter's email is fetched correctly
+
+      invite.attributes.merge(
+        project_name: project_name,
+        user_email: user_email
+      )
+    end
+
+    invites_with_project_and_user
   end
 end

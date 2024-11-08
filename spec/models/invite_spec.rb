@@ -7,6 +7,7 @@
 #  status        :string           default("pending")
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
+#  inviter_id    :bigint
 #  project_id    :bigint           not null
 #  user_id       :bigint
 #

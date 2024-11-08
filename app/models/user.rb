@@ -34,15 +34,6 @@ class User < ApplicationRecord
     devise :omniauthable, :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable, omniauth_providers: [:google_oauth2]
 
-    # def self.from_omniauth(auth)
-    #     where(provider: auth.provider, uid: auth.uid).first_or_create do |user|
-    #         user.email = auth.info.email
-    #         user.provider = auth.provider            # Save the provider if not already set
-    #         user.uid = auth.uid                      # Save the UID from Google
-    #         # Set any other necessary fields here from `auth` if needed
-    #         user.password = Devise.friendly_token[0, 20] if user.new_record?
-    #     end
-    # end
     def self.from_omniauth(auth)
         # Find user by provider and uid first
         user = User.find_by(provider: auth.provider, uid: auth.uid)
@@ -63,11 +54,7 @@ class User < ApplicationRecord
             password: Devise.friendly_token[0, 20]
           )
         end
-      
         user
-    end
-      
-      
-          
+    end       
 end
   
