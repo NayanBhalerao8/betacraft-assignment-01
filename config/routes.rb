@@ -22,14 +22,7 @@ Rails.application.routes.draw do
         resources :tasks, only: [:create, :update, :edit, :show, :index] do
           resources :comments, only: [:index, :create, :update, :edit, :show]  # Nested under tasks
         end
-      end
-    end
-  end
-  
-  
-  namespace :api do
-    namespace :v1 do
-      resources :projects do
+
         resources :invites, only: [:create] do
           member do
             post :accept
@@ -37,12 +30,8 @@ Rails.application.routes.draw do
           end
         end
       end
-    end
-  end
 
-  namespace :api do
-    namespace :v1 do
-      # Route for checking invites doesn't require a project ID
+      # Route for checking invites without project ID
       get 'check_invites', to: 'invites#check_invites'
     end
   end

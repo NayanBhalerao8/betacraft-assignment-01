@@ -7,6 +7,7 @@
 #  status        :string           default("pending")
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
+#  invitee_id    :bigint
 #  inviter_id    :bigint
 #  project_id    :bigint           not null
 #  user_id       :bigint
@@ -21,9 +22,10 @@
 #
 class Invite < ApplicationRecord
   belongs_to :project
-  belongs_to :inviter, class_name: 'User' # assuming inviter is the user who sent the invite
-  belongs_to :invitee, class_name: 'User', optional: true # if you want to link the invitee later
+  belongs_to :inviter, class_name: 'User'  # Assuming inviter is the user who sent the invite
+  belongs_to :invitee, class_name: 'User', optional: true  # Optional invitee
 
+  validates :invitee_email, presence: true
   # Scope to get pending invites
   scope :pending, -> { where(status: 'pending') }
 
