@@ -31,11 +31,12 @@ class Task < ApplicationRecord
     # Method to initialize a new task within a project and user context
     def self.create_for_project_and_user(project_id, user, params)
       task = new(params.merge(project_id: project_id, user_id: user.id))
-      task.save ? task : nil
+      task.save ? task : task
     end
 
     # Method to find a task by ID within a specific project
     def self.find_in_project(task_id, project_id)
       find_by(id: task_id, project_id: project_id)
     end
+    
 end

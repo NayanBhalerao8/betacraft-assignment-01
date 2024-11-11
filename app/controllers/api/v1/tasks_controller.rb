@@ -6,10 +6,10 @@ module Api
       def create
         @task = Task.create_for_project_and_user(params[:project_id], current_user, task_params)
     
-        if @task
+        if @task.persisted?  # Check if the task was successfully saved
           render json: @task, status: :created
         else
-          render json: @task.errors, status: :unprocessable_entity
+          render json: @task.errors, status: :unprocessable_entity  # Return errors if task creation failed
         end
       end
       
