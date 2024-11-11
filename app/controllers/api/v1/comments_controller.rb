@@ -6,20 +6,18 @@ module Api
 
       # Add this to fetch all comments for the task
       def index
-        comments = @task.comments
-        render json: comments
+        render json: @task.comments
       end
 
       def create
-        @comment = @task.comments.new(comment_params)
-        @comment.user = current_user
-
-        if @comment.save
+        @comment = Comment.create_for_task(@task, current_user, comment_params[:content])
+      
+        if @comment.persisted?
           render json: @comment, status: :created
         else
           render json: { errors: @comment.errors.full_messages }, status: :unprocessable_entity
         end
-      end
+      end      
 
       private
 

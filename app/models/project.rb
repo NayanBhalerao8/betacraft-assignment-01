@@ -23,4 +23,9 @@ class Project < ApplicationRecord
     belongs_to :user
     validates :name, presence: true
     validates :description, presence: true
+
+    # Method to include tasks and comments in the JSON response
+    def as_json(options = {})
+      super(options.merge(include: { tasks: { include: :comments } }))
+    end
 end

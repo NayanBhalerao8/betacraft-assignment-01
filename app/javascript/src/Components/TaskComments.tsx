@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 
 interface Comment {
@@ -10,39 +10,27 @@ interface Comment {
 }
 
 interface TaskCommentsProps {
-  taskId: number;
-  projectId: number;
+  taskId: string;
+  projectId: string;
+  comments: Comment[];  // Accepting comments as a prop
+  onCommentAdded: (newComment: Comment) => void;
 }
 
-const TaskComments: React.FC<TaskCommentsProps> = ({ taskId, projectId }) => {
-  const [comments, setComments] = useState<Comment[]>([]);
+const TaskComments: React.FC<TaskCommentsProps> = ({ taskId, projectId, comments, onCommentAdded }) => {
   const [newComment, setNewComment] = useState('');
-  const [loading, setLoading] = useState(true);
 
-  // Fetch comments for the specific task
-  useEffect(() => {
-    setLoading(true); // Set loading to true when fetching comments
-    axios.get(`/api/v1/tasks/${taskId}/comments`)
-      .then((response) => {
-        setComments(Array.isArray(response.data) ? response.data : []);
-        setLoading(false); // Set loading to false once data is fetched
-      })
-      .catch((error) => {
-        console.error('Error fetching comments:', error);
-        setLoading(false);
-        setComments([]);
-      });
-  }, [taskId]);
-
-  // Handle new comment submission
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
     if (newComment.trim()) {
-      axios.post(`/api/v1/projects/${projectId}/tasks/${taskId}/comments`, { comment: { content: newComment } })
+      axios
+        .post(`/api/v1/projects/${projectId}/tasks/${taskId}/comments`, { comment: { content: newComment } })
         .then((response) => {
           const newCommentData = response.data as Comment;
-          setComments((prevComments) => [...prevComments, newCommentData]); // Add the new comment to the list
+
+          // Call the prop function to add the new comment
+          onCommentAdded(newCommentData);
+
           setNewComment(''); // Reset input field after submission
         })
         .catch((error) => {
@@ -50,8 +38,6 @@ const TaskComments: React.FC<TaskCommentsProps> = ({ taskId, projectId }) => {
         });
     }
   };
-
-  if (loading) return <div>Loading comments...</div>;
 
   return (
     <div>
