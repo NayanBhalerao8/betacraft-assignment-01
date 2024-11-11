@@ -65,6 +65,7 @@ end
 
 group :test do
   gem 'factory_bot_rails', '~> 6.4', '>= 6.4.3'
+  gem 'shoulda-matchers', '~> 5.0'
   # Adds support for Capybara system testing and selenium driver
   gem 'capybara', '~> 3.40'
   # Easy installation and use of web drivers to run system tests with browsers

@@ -346,6 +346,8 @@ GEM
     sentry-ruby (5.21.0)
       bigdecimal
       concurrent-ruby (~> 1.0, >= 1.0.2)
+    shoulda-matchers (5.3.0)
+      activesupport (>= 5.2.0)
     sidekiq (7.3.5)
       connection_pool (>= 2.3.0)
       logger
@@ -415,7 +417,7 @@ PLATFORMS
   arm-linux
   arm-linux-gnu
   arm-linux-musl
-  arm64-darwin
+  arm64-darwin-22
   x86-linux
   x86-linux-gnu
   x86-linux-musl
@@ -450,6 +452,7 @@ DEPENDENCIES
   seedbank (~> 0.5.0)
   sentry-rails (~> 5.20, >= 5.20.1)
   sentry-ruby (~> 5.20, >= 5.20.1)
+  shoulda-matchers (~> 5.0)
   sidekiq (~> 7.3, >= 7.3.2)
   sidekiq-scheduler (~> 5.0, >= 5.0.6)
   spring (~> 4.2, >= 4.2.1)
