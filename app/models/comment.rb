@@ -25,5 +25,11 @@ class Comment < ApplicationRecord
   
     validates :content, presence: true
     validates :user_id, presence: true
+
+    def self.create_for_task(task, user, content)
+        comment = task.comments.new(content: content, user: user)
+        comment.save
+        comment
+    end
 end
   
