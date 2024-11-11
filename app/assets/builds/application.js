@@ -2439,7 +2439,7 @@
           var HostPortal = 4;
           var HostComponent = 5;
           var HostText = 6;
-          var Fragment3 = 7;
+          var Fragment4 = 7;
           var Mode = 8;
           var ContextConsumer = 9;
           var ContextProvider = 10;
@@ -3596,7 +3596,7 @@
                 return "DehydratedFragment";
               case ForwardRef:
                 return getWrappedName$1(type, type.render, "ForwardRef");
-              case Fragment3:
+              case Fragment4:
                 return "Fragment";
               case HostComponent:
                 return type;
@@ -12025,7 +12025,7 @@
               }
             }
             function updateFragment2(returnFiber, current2, fragment, lanes, key) {
-              if (current2 === null || current2.tag !== Fragment3) {
+              if (current2 === null || current2.tag !== Fragment4) {
                 var created = createFiberFromFragment(fragment, returnFiber.mode, lanes, key);
                 created.return = returnFiber;
                 return created;
@@ -12428,7 +12428,7 @@
                 if (child.key === key) {
                   var elementType = element.type;
                   if (elementType === REACT_FRAGMENT_TYPE) {
-                    if (child.tag === Fragment3) {
+                    if (child.tag === Fragment4) {
                       deleteRemainingChildren(returnFiber, child.sibling);
                       var existing = useFiber(child, element.props.children);
                       existing.return = returnFiber;
@@ -17904,7 +17904,7 @@
                 var _resolvedProps2 = workInProgress2.elementType === type ? _unresolvedProps2 : resolveDefaultProps(type, _unresolvedProps2);
                 return updateForwardRef(current2, workInProgress2, type, _resolvedProps2, renderLanes2);
               }
-              case Fragment3:
+              case Fragment4:
                 return updateFragment(current2, workInProgress2, renderLanes2);
               case Mode:
                 return updateMode(current2, workInProgress2, renderLanes2);
@@ -18176,7 +18176,7 @@
               case SimpleMemoComponent:
               case FunctionComponent:
               case ForwardRef:
-              case Fragment3:
+              case Fragment4:
               case Mode:
               case Profiler:
               case ContextConsumer:
@@ -22437,7 +22437,7 @@
             return fiber;
           }
           function createFiberFromFragment(elements, mode, lanes, key) {
-            var fiber = createFiber(Fragment3, elements, key, mode);
+            var fiber = createFiber(Fragment4, elements, key, mode);
             fiber.lanes = lanes;
             return fiber;
           }
@@ -26480,9 +26480,9 @@
     if (error) {
       return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "text-red-500", children: error });
     }
-    return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { className: "container mx-auto p-6", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime.jsx)("h2", { className: "text-3xl font-semibold mb-8", children: "Projects  : " }),
-      /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("form", { onSubmit: handleSubmit, className: "bg-white p-8 rounded-lg shadow-md mb-8 w-full", children: [
+    return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime.jsx)("h2", { className: "text-3xl font-semibold mb-8", children: "Projects" }),
+      /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "border p-6 rounded-lg mb-8", children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("form", { onSubmit: handleSubmit, className: "w-full max-w-4xl mx-auto", children: [
         /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { className: "mb-6", children: [
           /* @__PURE__ */ (0, import_jsx_runtime.jsx)("label", { htmlFor: "name", className: "block text-lg font-medium mb-2", children: "Project Name:" }),
           /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
@@ -26498,7 +26498,6 @@
             }
           )
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime.jsx)("br", {}),
         /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { className: "mb-6", children: [
           /* @__PURE__ */ (0, import_jsx_runtime.jsx)("label", { htmlFor: "description", className: "block text-lg font-medium mb-2", children: "Project Description:" }),
           /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
@@ -26513,7 +26512,6 @@
             }
           )
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime.jsx)("br", {}),
         /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
           "button",
           {
@@ -26523,26 +26521,24 @@
             children: isSubmitting ? "Creating..." : "Create Project"
           }
         )
-      ] }),
-      projects.length === 0 ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { className: "text-gray-500", children: "No projects available" }) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)("ul", { className: "space-y-6", children: projects.map((project) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("li", { className: "bg-white p-6 rounded-lg shadow-md", children: [
+      ] }) }),
+      /* @__PURE__ */ (0, import_jsx_runtime.jsx)("br", {}),
+      /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "border p-6 rounded-lg", children: projects.length === 0 ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { className: "text-gray-500 text-center", children: "No projects available" }) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)("ul", { className: "space-y-6 mt-8", children: projects.map((project) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("li", { className: "bg-white p-6 rounded-lg shadow-md", children: [
         /* @__PURE__ */ (0, import_jsx_runtime.jsx)("h3", { className: "text-xl font-semibold", children: project.name }),
         /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { className: "text-gray-700 mt-2", children: project.description }),
         /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("small", { className: "text-gray-500 block mt-2", children: [
           "Created at: ",
           new Date(project.created_at).toLocaleDateString()
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(
+        /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
           Link,
           {
             to: `/projects/${project.id}`,
             className: "text-blue-500 hover:text-blue-700 mt-4 inline-block",
-            children: [
-              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("br", {}),
-              "View Project"
-            ]
+            children: "View Project"
           }
         )
-      ] }, project.id)) })
+      ] }, project.id)) }) })
     ] });
   };
   var Projects_default = Projects;
@@ -29155,7 +29151,7 @@
     };
     return /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { children: [
       /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("h2", { children: "Comments" }),
-      comments.length === 0 ? /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("p", { children: "No comments available." }) : /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("ul", { children: comments.map((comment) => /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("li", { children: [
+      !comments ? /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("p", { children: "No comments available." }) : /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("ul", { children: comments.map((comment) => /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("li", { children: [
         /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("strong", { children: comment.user_name }),
         " - ",
         comment.created_at,
