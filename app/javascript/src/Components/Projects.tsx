@@ -73,66 +73,68 @@ const Projects: React.FC = () => {
   }
 
   return (
-    <div className="container mx-auto p-6">
-      <h2 className="text-3xl font-semibold mb-8">Projects  : </h2>
+    <>
+      <h2 className="text-3xl font-semibold mb-8">Projects</h2>
 
       {/* Create New Project Form */}
-      <form onSubmit={handleSubmit} className="bg-white p-8 rounded-lg shadow-md mb-8 w-full">
-        <div className="mb-6">
-          <label htmlFor="name" className="block text-lg font-medium mb-2">Project Name:</label>
-          <input
-            type="text"
-            id="name"
-            name="name"
-            value={newProject.name}
-            onChange={handleInputChange}
-            required
-            className="p-3 border border-gray-300 rounded w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-        </div><br></br>
-        <div className="mb-6">
-          <label htmlFor="description" className="block text-lg font-medium mb-2">Project Description:</label>
-          <textarea
-            id="description"
-            name="description"
-            value={newProject.description}
-            onChange={handleInputChange}
-            required
-            className="p-3 border border-gray-300 rounded w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-        </div><br></br>
-        <button
-          type="submit"
-          disabled={isSubmitting}
-          className="w-full py-3 px-4 bg-blue-500 text-white rounded hover:bg-blue-700 disabled:bg-gray-400 transition duration-200"
-        >
-          {isSubmitting ? 'Creating...' : 'Create Project'}
-        </button>
-      </form>
-
+      <div className="border p-6 rounded-lg mb-8">
+        <form onSubmit={handleSubmit} className="w-full max-w-4xl mx-auto">
+          <div className="mb-6">
+            <label htmlFor="name" className="block text-lg font-medium mb-2">Project Name:</label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              value={newProject.name}
+              onChange={handleInputChange}
+              required
+              className="p-3 border border-gray-300 rounded w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+          <div className="mb-6">
+            <label htmlFor="description" className="block text-lg font-medium mb-2">Project Description:</label>
+            <textarea
+              id="description"
+              name="description"
+              value={newProject.description}
+              onChange={handleInputChange}
+              required
+              className="p-3 border border-gray-300 rounded w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+          <button
+            type="submit"
+            disabled={isSubmitting}
+            className="w-full py-3 px-4 bg-blue-500 text-white rounded hover:bg-blue-700 disabled:bg-gray-400 transition duration-200"
+          >
+            {isSubmitting ? 'Creating...' : 'Create Project'}
+          </button>
+        </form>
+      </div>
+      <br></br>
       {/* Projects List */}
-      {projects.length === 0 ? (
-        <p className="text-gray-500">No projects available</p>
-      ) : (
-        <ul className="space-y-6">
-          {projects.map((project) => (
-            <li key={project.id} className="bg-white p-6 rounded-lg shadow-md">
-              <h3 className="text-xl font-semibold">{project.name}</h3>
-              <p className="text-gray-700 mt-2">{project.description}</p>
-              <small className="text-gray-500 block mt-2">Created at: {new Date(project.created_at).toLocaleDateString()}</small>
-              <Link
-                to={`/projects/${project.id}`}
-                className="text-blue-500 hover:text-blue-700 mt-4 inline-block"
-              ><br></br>
-                View Project
-              </Link>
-            </li>
-          ))}
-        </ul>
-      )}
-    </div>
-
-
+      <div className="border p-6 rounded-lg">
+        {projects.length === 0 ? (
+          <p className="text-gray-500 text-center">No projects available</p>
+        ) : (
+          <ul className="space-y-6 mt-8">
+            {projects.map((project) => (
+              <li key={project.id} className="bg-white p-6 rounded-lg shadow-md">
+                <h3 className="text-xl font-semibold">{project.name}</h3>
+                <p className="text-gray-700 mt-2">{project.description}</p>
+                <small className="text-gray-500 block mt-2">Created at: {new Date(project.created_at).toLocaleDateString()}</small>
+                <Link
+                  to={`/projects/${project.id}`}
+                  className="text-blue-500 hover:text-blue-700 mt-4 inline-block"
+                >
+                  View Project
+                </Link>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+    </>
   );
 };
 
