@@ -10,6 +10,15 @@ interface Task {
   id: number;
   title: string;
   completed: boolean;
+  comments: Comment[];  // Added comments here
+}
+
+interface Comment {
+  id: number;
+  content: string;
+  user_name: string;
+  created_at: string;
+  updated_at: string;
 }
 
 interface Project {
@@ -66,13 +75,29 @@ const ShowProject = () => {
       });
   };
 
+  // Handle new comment addition
+  const handleCommentAdded = (newComment: Comment, taskId: number) => {
+    setProject((prevProject) => {
+      if (prevProject) {
+        const updatedTasks = prevProject.tasks.map(task =>
+          task.id === taskId ? {
+            ...task,
+            comments: [...task.comments, newComment] // Add the new comment to the task's comments
+          } : task
+        );
+        return { ...prevProject, tasks: updatedTasks };
+      }
+      return prevProject;
+    });
+  };
+
   if (loading) return <div>Loading...</div>;
   if (!project) return <div>Project not found</div>;
 
   return (
     <div>
-      <h1>Project - {project.name}</h1>
-      <p>Description - {project.description}</p>
+      <h1>Project: {project.name}</h1>
+      <p>Description: {project.description}</p>
       <div className="border p-4 rounded-lg bg-gray-100">
         <h3 className="text-lg font-semibold mb-2">Invite Users to This Project</h3>
         <Link
@@ -83,7 +108,7 @@ const ShowProject = () => {
         </Link>
       </div>
 
-      <h2>Tasks</h2>
+      <h2>Tasks:</h2>
       {project.tasks && project.tasks.length > 0 ? (
         project.tasks.map((task) => (
           <div key={task.id}>
@@ -95,8 +120,8 @@ const ShowProject = () => {
               onChange={(e) => updateTask(project.id, task.id, e.target.checked)}
             />
 
-            {/* Adding Task Comments Section */}
-            <TaskComments taskId={task.id} projectId={project.id} /> {/* Ensure projectId is passed correctly */}
+            {/* Passing task comments directly to the TaskComments component */}
+            <TaskComments taskId={task.id} projectId={project.id} comments={task.comments} onCommentAdded={(newComment) => handleCommentAdded(newComment, task.id)} />
           </div>
         ))
       ) : (
@@ -116,8 +141,8 @@ const ShowProject = () => {
         }}
       />
     </div>
-
   );
 };
+
 
 export default ShowProject;

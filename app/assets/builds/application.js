@@ -1101,7 +1101,7 @@
             var dispatcher = resolveDispatcher();
             return dispatcher.useRef(initialValue);
           }
-          function useEffect7(create, deps) {
+          function useEffect6(create, deps) {
             var dispatcher = resolveDispatcher();
             return dispatcher.useEffect(create, deps);
           }
@@ -1884,7 +1884,7 @@
           exports.useContext = useContext3;
           exports.useDebugValue = useDebugValue;
           exports.useDeferredValue = useDeferredValue;
-          exports.useEffect = useEffect7;
+          exports.useEffect = useEffect6;
           exports.useId = useId;
           exports.useImperativeHandle = useImperativeHandle;
           exports.useInsertionEffect = useInsertionEffect;
@@ -29139,34 +29139,20 @@
   // app/javascript/src/Components/TaskComments.tsx
   var import_react3 = __toESM(require_react());
   var import_jsx_runtime3 = __toESM(require_jsx_runtime());
-  var TaskComments = ({ taskId, projectId }) => {
-    const [comments, setComments] = (0, import_react3.useState)([]);
+  var TaskComments = ({ taskId, projectId, comments, onCommentAdded }) => {
     const [newComment, setNewComment] = (0, import_react3.useState)("");
-    const [loading, setLoading] = (0, import_react3.useState)(true);
-    (0, import_react3.useEffect)(() => {
-      setLoading(true);
-      axios_default.get(`/api/v1/tasks/${taskId}/comments`).then((response) => {
-        setComments(Array.isArray(response.data) ? response.data : []);
-        setLoading(false);
-      }).catch((error) => {
-        console.error("Error fetching comments:", error);
-        setLoading(false);
-        setComments([]);
-      });
-    }, [taskId]);
     const handleSubmit = (e) => {
       e.preventDefault();
       if (newComment.trim()) {
         axios_default.post(`/api/v1/projects/${projectId}/tasks/${taskId}/comments`, { comment: { content: newComment } }).then((response) => {
           const newCommentData = response.data;
-          setComments((prevComments) => [...prevComments, newCommentData]);
+          onCommentAdded(newCommentData);
           setNewComment("");
         }).catch((error) => {
           console.error("Error adding comment:", error);
         });
       }
     };
-    if (loading) return /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("div", { children: "Loading comments..." });
     return /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { children: [
       /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("h2", { children: "Comments" }),
       comments.length === 0 ? /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("p", { children: "No comments available." }) : /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("ul", { children: comments.map((comment) => /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("li", { children: [
@@ -29230,15 +29216,30 @@
         console.error("Error updating task:", error);
       });
     };
+    const handleCommentAdded = (newComment, taskId) => {
+      setProject((prevProject) => {
+        if (prevProject) {
+          const updatedTasks = prevProject.tasks.map(
+            (task) => task.id === taskId ? {
+              ...task,
+              comments: [...task.comments, newComment]
+              // Add the new comment to the task's comments
+            } : task
+          );
+          return { ...prevProject, tasks: updatedTasks };
+        }
+        return prevProject;
+      });
+    };
     if (loading) return /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("div", { children: "Loading..." });
     if (!project) return /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("div", { children: "Project not found" });
     return /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)("div", { children: [
       /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)("h1", { children: [
-        "Project - ",
+        "Project: ",
         project.name
       ] }),
       /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)("p", { children: [
-        "Description - ",
+        "Description: ",
         project.description
       ] }),
       /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)("div", { className: "border p-4 rounded-lg bg-gray-100", children: [
@@ -29252,7 +29253,7 @@
           }
         )
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("h2", { children: "Tasks" }),
+      /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("h2", { children: "Tasks:" }),
       project.tasks && project.tasks.length > 0 ? project.tasks.map((task) => /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)("div", { children: [
         /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("h3", { children: task.title }),
         /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)("p", { children: [
@@ -29268,8 +29269,7 @@
             onChange: (e) => updateTask(project.id, task.id, e.target.checked)
           }
         ),
-        /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(TaskComments_default, { taskId: task.id, projectId: project.id }),
-        " "
+        /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(TaskComments_default, { taskId: task.id, projectId: project.id, comments: task.comments, onCommentAdded: (newComment) => handleCommentAdded(newComment, task.id) })
       ] }, task.id)) : /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("p", { children: "No tasks available." }),
       /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(
         TaskCreate_default,
